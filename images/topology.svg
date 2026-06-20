@@ -1,0 +1,281 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <defs>
+    <!-- Background gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1e1e38"/>
+      <stop offset="100%" stop-color="#0d0d1a"/>
+    </radialGradient>
+    <!-- Device gradients -->
+    <linearGradient id="routerGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d6bc1"/>
+      <stop offset="100%" stop-color="#1a3f7a"/>
+    </linearGradient>
+    <linearGradient id="switchGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2b8a3e"/>
+      <stop offset="100%" stop-color="#1a5c2a"/>
+    </linearGradient>
+    <linearGradient id="serverGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a3a5c"/>
+      <stop offset="100%" stop-color="#252540"/>
+    </linearGradient>
+    <linearGradient id="wifiGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c97d2e"/>
+      <stop offset="100%" stop-color="#8a5520"/>
+    </linearGradient>
+    <linearGradient id="cloudGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a4a6a"/>
+      <stop offset="100%" stop-color="#2a2a44"/>
+    </linearGradient>
+    <linearGradient id="ontGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7b2dbd"/>
+      <stop offset="100%" stop-color="#4a1a75"/>
+    </linearGradient>
+    <linearGradient id="dockerGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e6ba8"/>
+      <stop offset="100%" stop-color="#124478"/>
+    </linearGradient>
+    <linearGradient id="proxmoxGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b84141"/>
+      <stop offset="100%" stop-color="#7a2a2a"/>
+    </linearGradient>
+    <linearGradient id="offlineGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#555555"/>
+      <stop offset="100%" stop-color="#333333"/>
+    </linearGradient>
+    <linearGradient id="wifiClientGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a7a5a"/>
+      <stop offset="100%" stop-color="#1a4a38"/>
+    </linearGradient>
+    <!-- Glow filter -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <!-- Arrow marker -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5a7aad"/>
+    </marker>
+    <marker id="arrowWiFi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c97d2e"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#bgGrad)"/>
+
+  <!-- Grid lines (subtle) -->
+  <g stroke="#2a2a44" stroke-width="0.5" opacity="0.3">
+    <line x1="0" y1="0" x2="1200" y2="0"/>
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="0" y1="500" x2="1200" y2="500"/>
+    <line x1="0" y1="600" x2="1200" y2="600"/>
+    <line x1="0" y1="700" x2="1200" y2="700"/>
+    <line x1="0" y1="800" x2="1200" y2="800"/>
+    <line x1="0" y1="900" x2="1200" y2="900"/>
+    <line x1="0" y1="0" x2="0" y2="900"/>
+    <line x1="200" y1="0" x2="200" y2="900"/>
+    <line x1="400" y1="0" x2="400" y2="900"/>
+    <line x1="600" y1="0" x2="600" y2="900"/>
+    <line x1="800" y1="0" x2="800" y2="900"/>
+    <line x1="1000" y1="0" x2="1000" y2="900"/>
+    <line x1="1200" y1="0" x2="1200" y2="900"/>
+  </g>
+
+  <!-- Title -->
+  <text x="600" y="35" text-anchor="middle" fill="#7ab8e8" font-family="monospace, sans-serif" font-size="20" font-weight="bold" filter="url(#glow)">🌐 Alpha Network Topology</text>
+
+  <!-- ============================== -->
+  <!-- ROW 1: Internet → ONT → Router -->
+  <!-- ============================== -->
+
+  <!-- Internet Cloud -->
+  <rect x="50" y="70" width="140" height="70" rx="14" ry="14" fill="url(#cloudGrad)" stroke="#5a7aad" stroke-width="1.5" filter="url(#softShadow)"/>
+  <text x="120" y="105" text-anchor="middle" fill="#aabbee" font-family="monospace, sans-serif" font-size="14" font-weight="bold">☁ Internet</text>
+  <text x="120" y="125" text-anchor="middle" fill="#8899bb" font-family="monospace, sans-serif" font-size="9">WAN</text>
+
+  <!-- Arrow from Internet to ONT -->
+  <line x1="190" y1="105" x2="250" y2="105" stroke="#5a7aad" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ONT -->
+  <rect x="260" y="70" width="140" height="70" rx="10" ry="10" fill="url(#ontGrad)" stroke="#9966cc" stroke-width="1.5" filter="url(#softShadow)"/>
+  <text x="330" y="100" text-anchor="middle" fill="#ddaaff" font-family="monospace, sans-serif" font-size="12" font-weight="bold">📡 ONT</text>
+  <text x="330" y="118" text-anchor="middle" fill="#bbaadd" font-family="monospace, sans-serif" font-size="9">Fiber Modem</text>
+
+  <!-- Arrow from ONT to Router -->
+  <line x1="400" y1="105" x2="460" y2="105" stroke="#5a7aad" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- OPNsense Router -->
+  <rect x="470" y="60" width="180" height="90" rx="12" ry="12" fill="url(#routerGrad)" stroke="#4a8ad4" stroke-width="2" filter="url(#softShadow)"/>
+  <text x="560" y="90" text-anchor="middle" fill="#aaddff" font-family="monospace, sans-serif" font-size="13" font-weight="bold">🛡 OPNsense Router</text>
+  <text x="560" y="108" text-anchor="middle" fill="#88bbee" font-family="monospace, sans-serif" font-size="10">10.0.1.1 / 24</text>
+  <text x="560" y="126" text-anchor="middle" fill="#6699cc" font-family="monospace, sans-serif" font-size="9">Firewall · DHCP · DNS</text>
+
+  <!-- Arrow from Router to Switch -->
+  <line x1="650" y1="105" x2="720" y2="105" stroke="#5a7aad" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- TL-SG108E Switch -->
+  <rect x="730" y="65" width="180" height="80" rx="10" ry="10" fill="url(#switchGrad)" stroke="#3ab85a" stroke-width="1.5" filter="url(#softShadow)"/>
+  <text x="820" y="98" text-anchor="middle" fill="#aaffcc" font-family="monospace, sans-serif" font-size="13" font-weight="bold">🔗 TL-SG108E Switch</text>
+  <text x="820" y="118" text-anchor="middle" fill="#88ddaa" font-family="monospace, sans-serif" font-size="9">8-Port Gigabit</text>
+
+  <!-- ============================== -->
+  <!-- ROW 2: Devices below switch -->
+  <!-- ============================== -->
+
+  <!-- Vertical lines from switch to devices -->
+  <!-- Switch output ports visualization -->
+  <g stroke="#3ab85a" stroke-width="1.5" opacity="0.6">
+    <line x1="760" y1="145" x2="760" y2="185"/>
+    <line x1="790" y1="145" x2="790" y2="185"/>
+    <line x1="820" y1="145" x2="820" y2="185"/>
+    <line x1="850" y1="145" x2="850" y2="185"/>
+    <line x1="880" y1="145" x2="880" y2="185"/>
+  </g>
+
+  <!-- Horizontal backbone -->
+  <line x1="760" y1="185" x2="880" y2="185" stroke="#3ab85a" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Branch lines down -->
+  <line x1="760" y1="185" x2="760" y2="230" stroke="#3ab85a" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.6"/>
+  <line x1="820" y1="185" x2="820" y2="230" stroke="#3ab85a" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.6"/>
+  <line x1="870" y1="185" x2="870" y2="230" stroke="#c97d2e" stroke-width="1.5" marker-end="url(#arrowWiFi)" opacity="0.6"/>
+  <line x1="920" y1="185" x2="920" y2="230" stroke="#555555" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.4"/>
+
+  <!-- ============================== -->
+  <!-- PI 5 (alphapi5) - Docker Host -->
+  <!-- ============================== -->
+  <rect x="620" y="240" width="280" height="310" rx="14" ry="14" fill="none" stroke="#2d6bc1" stroke-width="1" stroke-dasharray="6,4" opacity="0.4"/>
+  <text x="760" y="262" text-anchor="middle" fill="#2d6bc1" font-family="monospace, sans-serif" font-size="10" opacity="0.6">docker network</text>
+
+  <!-- Pi 5 main box -->
+  <rect x="640" y="270" width="240" height="55" rx="10" ry="10" fill="url(#serverGrad)" stroke="#5a7aad" stroke-width="1.5" filter="url(#softShadow)"/>
+  <text x="760" y="294" text-anchor="middle" fill="#ffffff" font-family="monospace, sans-serif" font-size="13" font-weight="bold">🍓 Pi 5 — alphapi5</text>
+  <text x="760" y="312" text-anchor="middle" fill="#88bbdd" font-family="monospace, sans-serif" font-size="10">10.0.1.100</text>
+
+  <!-- Docker containers grid -->
+  <g font-family="monospace, sans-serif" font-size="9">
+    <!-- Row 1 -->
+    <rect x="640" y="340" width="72" height="36" rx="6" ry="6" fill="url(#dockerGrad)" stroke="#3a8ad4" stroke-width="1"/>
+    <text x="676" y="354" text-anchor="middle" fill="#aaddff">🎬 Jellyfin</text>
+    <text x="676" y="366" text-anchor="middle" fill="#88bbdd" font-size="7">Media</text>
+
+    <rect x="722" y="340" width="72" height="36" rx="6" ry="6" fill="url(#dockerGrad)" stroke="#3a8ad4" stroke-width="1"/>
+    <text x="758" y="354" text-anchor="middle" fill="#aaddff">📸 Immich</text>
+    <text x="758" y="366" text-anchor="middle" fill="#88bbdd" font-size="7">Photos</text>
+
+    <rect x="804" y="340" width="72" height="36" rx="6" ry="6" fill="url(#dockerGrad)" stroke="#3a8ad4" stroke-width="1"/>
+    <text x="840" y="354" text-anchor="middle" fill="#aaddff">🎮 RomM</text>
+    <text x="840" y="366" text-anchor="middle" fill="#88bbdd" font-size="7">ROMs</text>
+
+    <!-- Row 2 -->
+    <rect x="640" y="386" width="72" height="36" rx="6" ry="6" fill="url(#dockerGrad)" stroke="#3a8ad4" stroke-width="1"/>
+    <text x="676" y="400" text-anchor="middle" fill="#aaddff">🧩 Pi-hole</text>
+    <text x="676" y="412" text-anchor="middle" fill="#88bbdd" font-size="7">10.0.1.253</text>
+
+    <rect x="722" y="386" width="72" height="36" rx="6" ry="6" fill="url(#dockerGrad)" stroke="#3a8ad4" stroke-width="1"/>
+    <text x="758" y="400" text-anchor="middle" fill="#aaddff">📦 *arrs</text>
+    <text x="758" y="412" text-anchor="middle" fill="#88bbdd" font-size="7">Sonarr etc.</text>
+
+    <rect x="804" y="386" width="72" height="36" rx="6" ry="6" fill="url(#dockerGrad)" stroke="#3a8ad4" stroke-width="1"/>
+    <text x="840" y="400" text-anchor="middle" fill="#aaddff">⚡ n8n</text>
+    <text x="840" y="412" text-anchor="middle" fill="#88bbdd" font-size="7">Automation</text>
+
+    <!-- Row 3 -->
+    <rect x="722" y="432" width="72" height="36" rx="6" ry="6" fill="url(#dockerGrad)" stroke="#3a8ad4" stroke-width="1"/>
+    <text x="758" y="446" text-anchor="middle" fill="#aaddff">🐳 Portainer</text>
+    <text x="758" y="458" text-anchor="middle" fill="#88bbdd" font-size="7">Docker UI</text>
+  </g>
+
+  <!-- ============================== -->
+  <!-- MAC MINI (alphamox) - Proxmox -->
+  <!-- ============================== -->
+  <rect x="1020" y="470" width="160" height="320" rx="14" ry="14" fill="none" stroke="#b84141" stroke-width="1" stroke-dasharray="6,4" opacity="0.4"/>
+  <text x="1100" y="492" text-anchor="middle" fill="#b84141" font-family="monospace, sans-serif" font-size="10" opacity="0.6">proxmox</text>
+
+  <!-- Mac Mini main box -->
+  <rect x="640" y="500" width="360" height="55" rx="10" ry="10" fill="url(#serverGrad)" stroke="#5a7aad" stroke-width="1.5" filter="url(#softShadow)"/>
+  <text x="820" y="524" text-anchor="middle" fill="#ffffff" font-family="monospace, sans-serif" font-size="13" font-weight="bold">💻 Mac Mini — alphamox</text>
+  <text x="820" y="542" text-anchor="middle" fill="#88bbdd" font-family="monospace, sans-serif" font-size="10">10.0.1.108 · Proxmox VE</text>
+
+  <!-- VMs -->
+  <rect x="680" y="570" width="130" height="55" rx="8" ry="8" fill="url(#proxmoxGrad)" stroke="#d46060" stroke-width="1.5" filter="url(#softShadow)"/>
+  <text x="745" y="594" text-anchor="middle" fill="#ffaaaa" font-family="monospace, sans-serif" font-size="11" font-weight="bold">🏠 Home Assistant</text>
+  <text x="745" y="612" text-anchor="middle" fill="#dd8888" font-family="monospace, sans-serif" font-size="9">10.0.1.154</text>
+
+  <rect x="830" y="570" width="130" height="55" rx="8" ry="8" fill="url(#proxmoxGrad)" stroke="#d46060" stroke-width="1.5" filter="url(#softShadow)"/>
+  <text x="895" y="594" text-anchor="middle" fill="#ffaaaa" font-family="monospace, sans-serif" font-size="11" font-weight="bold">🌐 Omada Controller</text>
+  <text x="895" y="612" text-anchor="middle" fill="#dd8888" font-family="monospace, sans-serif" font-size="9">10.0.1.141</text>
+
+  <!-- ============================== -->
+  <!-- EAP 670 WiFi 6 AP -->
+  <!-- ============================== -->
+  <rect x="640" y="660" width="240" height="50" rx="10" ry="10" fill="url(#wifiGrad)" stroke="#e8a040" stroke-width="1.5" filter="url(#softShadow)"/>
+  <text x="760" y="683" text-anchor="middle" fill="#ffeebb" font-family="monospace, sans-serif" font-size="12" font-weight="bold">📶 EAP 670 WiFi 6 AP</text>
+  <text x="760" y="699" text-anchor="middle" fill="#ddcc88" font-family="monospace, sans-serif" font-size="9">Omada Managed</text>
+
+  <!-- WiFi clients -->
+  <!-- WiFi signal arcs -->
+  <g stroke="#c97d2e" stroke-width="1" fill="none" opacity="0.3">
+    <path d="M 720 710 Q 720 750 680 750"/>
+    <path d="M 760 710 Q 760 760 760 760"/>
+    <path d="M 800 710 Q 800 750 840 750"/>
+  </g>
+
+  <rect x="900" y="665" width="100" height="40" rx="8" ry="8" fill="url(#wifiClientGrad)" stroke="#3aaa7a" stroke-width="1" filter="url(#softShadow)"/>
+  <text x="950" y="686" text-anchor="middle" fill="#aaffcc" font-family="monospace, sans-serif" font-size="10">📱 iPhone</text>
+  <text x="950" y="699" text-anchor="middle" fill="#88ddaa" font-family="monospace, sans-serif" font-size="8">WiFi Client</text>
+
+  <rect x="900" y="715" width="100" height="40" rx="8" ry="8" fill="url(#wifiClientGrad)" stroke="#3aaa7a" stroke-width="1" filter="url(#softShadow)"/>
+  <text x="950" y="736" text-anchor="middle" fill="#aaffcc" font-family="monospace, sans-serif" font-size="10">💻 PC</text>
+  <text x="950" y="749" text-anchor="middle" fill="#88ddaa" font-family="monospace, sans-serif" font-size="8">WiFi Client</text>
+
+  <rect x="900" y="765" width="100" height="40" rx="8" ry="8" fill="url(#wifiClientGrad)" stroke="#3aaa7a" stroke-width="1" filter="url(#softShadow)"/>
+  <text x="950" y="786" text-anchor="middle" fill="#aaffcc" font-family="monospace, sans-serif" font-size="10">💻 Laptops</text>
+  <text x="950" y="799" text-anchor="middle" fill="#88ddaa" font-family="monospace, sans-serif" font-size="8">WiFi Clients</text>
+
+  <!-- Connection from AP to WiFi clients -->
+  <path d="M 880 685 Q 890 685 900 685" stroke="#c97d2e" stroke-width="1.5" fill="none" marker-end="url(#arrowWiFi)" opacity="0.5" stroke-dasharray="4,3"/>
+  <path d="M 880 735 Q 890 735 900 735" stroke="#c97d2e" stroke-width="1.5" fill="none" marker-end="url(#arrowWiFi)" opacity="0.5" stroke-dasharray="4,3"/>
+  <path d="M 880 785 Q 890 785 900 785" stroke="#c97d2e" stroke-width="1.5" fill="none" marker-end="url(#arrowWiFi)" opacity="0.5" stroke-dasharray="4,3"/>
+
+  <!-- ============================== -->
+  <!-- PI 3 (alphapi3) - Offline -->
+  <!-- ============================== -->
+  <rect x="640" y="760" width="200" height="50" rx="10" ry="10" fill="url(#offlineGrad)" stroke="#666666" stroke-width="1" filter="url(#softShadow)" opacity="0.7"/>
+  <text x="740" y="784" text-anchor="middle" fill="#999999" font-family="monospace, sans-serif" font-size="11" font-weight="bold">🍓 Pi 3 — alphapi3</text>
+  <text x="740" y="798" text-anchor="middle" fill="#777777" font-family="monospace, sans-serif" font-size="9">10.0.1.101 · ⛔ Offline</text>
+
+  <!-- Legend -->
+  <rect x="30" y="770" width="280" height="110" rx="10" ry="10" fill="#1a1a30" stroke="#3a3a5c" stroke-width="1" opacity="0.9"/>
+  <text x="170" y="792" text-anchor="middle" fill="#7ab8e8" font-family="monospace, sans-serif" font-size="11" font-weight="bold">Legend</text>
+
+  <rect x="45" y="802" width="14" height="14" rx="3" fill="url(#cloudGrad)" stroke="#5a7aad" stroke-width="0.8"/>
+  <text x="65" y="814" fill="#8899bb" font-family="monospace, sans-serif" font-size="9">Network / Cloud</text>
+
+  <rect x="45" y="822" width="14" height="14" rx="3" fill="url(#routerGrad)" stroke="#4a8ad4" stroke-width="0.8"/>
+  <text x="65" y="834" fill="#8899bb" font-family="monospace, sans-serif" font-size="9">Router / Firewall</text>
+
+  <rect x="45" y="842" width="14" height="14" rx="3" fill="url(#switchGrad)" stroke="#3ab85a" stroke-width="0.8"/>
+  <text x="65" y="854" fill="#8899bb" font-family="monospace, sans-serif" font-size="9">Switch</text>
+
+  <rect x="170" y="802" width="14" height="14" rx="3" fill="url(#serverGrad)" stroke="#5a7aad" stroke-width="0.8"/>
+  <text x="190" y="814" fill="#8899bb" font-family="monospace, sans-serif" font-size="9">Server / Node</text>
+
+  <rect x="170" y="822" width="14" height="14" rx="3" fill="url(#wifiGrad)" stroke="#e8a040" stroke-width="0.8"/>
+  <text x="190" y="834" fill="#8899bb" font-family="monospace, sans-serif" font-size="9">Access Point</text>
+
+  <rect x="170" y="842" width="14" height="14" rx="3" fill="url(#offlineGrad)" stroke="#666666" stroke-width="0.8"/>
+  <text x="190" y="854" fill="#8899bb" font-family="monospace, sans-serif" font-size="9">Offline</text>
+
+  <!-- Footer -->
+  <text x="600" y="885" text-anchor="middle" fill="#3a3a5c" font-family="monospace, sans-serif" font-size="8">Generated · Hermes Agent · Alpha Network</text>
+</svg>
