@@ -98,8 +98,9 @@ A few things I'd tell myself if I were starting over:
 - **Start with the network.** OPNsense + a managed switch gives you VLANs from day one, and VLANs make everything cleaner later.
 - **Document as you go.** This repo exists because I didn't, and reconstructing everything from memory is painful.
 - **One service, one container.** Don't cram things together — Docker compose per service makes debugging 10x easier.
-- **Tailscale is magic.** Skip the WireGuard complexity for remote access unless you have specific needs.
+- **Tailscale is magic, but `--accept-routes` is a trap.** When a Tailscale node advertises subnet routes, other nodes accept them by default — routing local LAN traffic through the mesh tunnel and breaking direct connectivity. Set `--accept-routes=false` on non-router nodes.
 - **SD cards are temporary.** Log everything properly or your Pi's SD card will die faster than expected.
+- **Don't let NBD stay connected.** Running a QEMU NBD mount while the VM is running will corrupt the disk. Always disconnect before starting the VM.
 
 ---
 

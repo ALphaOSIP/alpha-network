@@ -20,12 +20,17 @@
 
 ### Goodnight House Script
 
-- **Host:** Mac Mini Proxmox host.
-- **Schedule:** Runs daily at 2:00 AM.
+- **Host:** Mac Mini Proxmox host (alphamox)
+- **Schedule:** Runs daily at 2:00 AM via root cron
 - **Script Path:** `/usr/local/bin/goodnight-ha.sh`
-- **Mechanism:** Calls the Home Assistant API via `curl`.
-- **Logging:** Output logged to `/var/log/goodnight-ha.log`.
-- **Purpose:** Automates house shutdown routines (lights off, systems arm, etc.) overnight.
+- **Mechanism:** Calls the Home Assistant API via `curl` — independent of HA's automation engine
+- **Entities controlled:**
+  - `media_player.lg_webos_tv_55ur8000aua` — LG Bedroom TV
+  - `light.headlight`, `light.headlight_2` — Gosund smart bulbs
+  - `light.bedroom_lamp` — TP-Link KL130
+- **Logging:** Output logged to `/var/log/goodnight-ha.log`
+- **Purpose:** Ensures TV and lights are off overnight — energy saving and peace of mind
+- **Why cron over HA automation:** More reliable — works even if HA's automation engine is reloading or has errors. Runs directly against the HA REST API.
 
 ### Network Monitor Script
 

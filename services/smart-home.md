@@ -44,8 +44,11 @@ No Nabu Casa subscription. Remote access is handled via a **Tailscale subnet rou
 
 ### Alexa Media Player
 
-- Custom component installed via HACS.
-- Configured to connect to the Amazon account for Echo device discovery and voice control.
+- **Version:** v5.15.4 (latest release, May 2026)
+- **Status:** Custom component files installed in HA `custom_components/`
+- **Devices:** Amazon Fire TV Cube (2nd Gen) in bedroom, plus other Echo devices
+- **Features planned:** TTS announcements, daily briefings, voice control of HA entities via Alexa routines
+- **Setup status:** Pending — needs to be configured through HA Settings → Devices & Services → Add Integration → "Alexa Media Player" with Amazon account credentials. Requires one-time Amazon OAuth login through the HA UI.
 
 ---
 

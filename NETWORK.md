@@ -162,6 +162,8 @@ Tailscale is the primary remote access method — a WireGuard-based mesh VPN wit
 3. On the subnet router: `tailscale up --advertise-routes=10.0.1.0/24 --accept-routes`
 4. Approve the advertised routes in the [Tailscale Admin Console](https://login.tailscale.com) under **Machines > Edit Route Settings**
 
+> **⚠️ Important routing fix:** On nodes that are *not* the subnet router (e.g., alphapi5), set `--accept-routes=false` to prevent Tailscale from routing local subnet traffic through the mesh tunnel instead of the LAN. Without this, traffic to `10.0.1.x` destinations gets sent through `tailscale0` instead of `eth0`, breaking local communication. This was a hard-learned lesson — the Pi 5 became unreachable from the LAN because all return traffic was going out through the Tailscale tunnel.
+
 ### WireGuard (Fallback)
 
 WireGuard is configured on OPNsense but is **not actively used**. Tailscale replaced it for all remote access — no need to maintain port forwards or dynamic DNS when using Tailscale.
