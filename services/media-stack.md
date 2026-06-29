@@ -8,6 +8,8 @@ The media automation stack runs entirely in Docker on a Raspberry Pi 5 (ARM64). 
 
 The key architectural distinction of this setup is the use of **Real-Debrid** as the download backend instead of a traditional VPN-bound torrent client. This eliminates the need for a VPN, port forwarding, and the bandwidth overhead of P2P traffic while providing near-instantaneous downloads via cached content on Real-Debrid's servers.
 
+**Pipeline Note (June 2026):** RDTClient uses a **watch folder** approach instead of direct qBittorrent API integration. Sonarr/Radarr write `.torrent` files to a watched directory via the Torrent Blackhole download client, RDTClient picks them up, sends them to Real-Debrid, and pulls completed files back. See the [Data Flow](#data-flow) section for details.
+
 ---
 
 ## Architecture Diagram
@@ -85,10 +87,12 @@ The key architectural distinction of this setup is the use of **Real-Debrid** as
 - **Port:** `8989`
 - **Role:** Monitors TV show library, searches for wanted episodes, sends grabs to download client, and organizes completed downloads into the media library.
 - **Configuration:**
-  - Download client: RDTClient (via SABnzbd-compatible API or blackhole)
+  - Download client: **Torrent Blackhole** — writes `.torrent` files to `/downloads/watch/`
+  - Category: `tv-sonarr`
   - Indexers: Provided by Prowlarr (sync enabled)
-  - Root folder: `/media/tv`
-  - Quality profile: HD/4K preferred
+  - Root folder: `/tv`
+  - Quality profile: HD - 720p/1080p
+- **Current library:** Bleach (seasons 1-17, only S17 TYBW monitored)
 - **Docker Image:** `linuxserver/sonarr:latest` (ARM64)
 
 ---
@@ -98,10 +102,12 @@ The key architectural distinction of this setup is the use of **Real-Debrid** as
 - **Port:** `7878`
 - **Role:** Same concept as Sonarr but for movies. Monitors wanted films, searches indexers, sends to download client.
 - **Configuration:**
-  - Download client: RDTClient
+  - Download client: **Torrent Blackhole** — writes `.torrent` files to `/downloads/watch/`
+  - Category: `radarr`
   - Indexers: Provided by Prowlarr (sync enabled)
-  - Root folder: `/media/movies`
-  - Quality profile: HD/4K preferred
+  - Root folder: `/movies`
+  - Quality profile: HD - 720p/1080p
+- **Current library:** Godzilla Minus One (2023)
 - **Docker Image:** `linuxserver/radarr:latest` (ARM64)
 
 ---
@@ -141,12 +147,15 @@ The key architectural distinction of this setup is the use of **Real-Debrid** as
   - **No port forwarding:** Traditional torrent clients need open ports; Real-Debrid avoids this entirely.
   - **Lower bandwidth usage:** Direct HTTPS download instead of P2P upload overhead.
   - **Cost:** ~$3/month vs a VPN ($5-10/month) + seedbox (optional).
-  - **Limitations:** Relies on Real-Debrid's cached content availability; less common/niche content may not be cached and requires queuing for completion on their servers.
+  - **Limitations:** Relies on Real-Debrid's cached content availability; less common/niche content may not be cached and requires queuing on their servers.
 - **Configuration:**
   - API Token: Configured with active Real-Debrid account
-  - Download directory: `/media/downloads/complete`
-  - Category-based routing: Sonarr/Radarr grabs routed to correct TV/Movie folders
-  - Auto-extract: Handles RAR archives automatically
+  - **AutoImport: Enabled** (critical — was the root cause of the pipeline being broken)
+  - **Watch Folder:** `/downloads/watch/`
+  - **Download Path:** `/downloads/`
+  - **Categories:** `tv-sonarr` → `/downloads/tv-sonarr/`, `radarr` → `/downloads/radarr/`
+  - **Download Limit:** 8 concurrent
+  - **Sonarr/Radarr integration:** Via Torrent Blackhole (not qBittorrent API — auth mismatch issues)
 - **Docker Image:** `rogerfar/rdtclient:latest` (ARM64)
 
 ---
@@ -186,11 +195,11 @@ networks:
 1. **User adds a show/movie** in Sonarr/Radarr
 2. **Sonarr/Radarr** queries Prowlarr for indexer results
 3. **Prowlarr** proxies requests through FlareSolverr if needed
-4. **Sonarr/Radarr** selects the best release and sends it to RDTClient
-5. **RDTClient** sends the magnet/URL to Real-Debrid's API
-6. **Real-Debrid** returns an instant download link (cached content)
-7. **RDTClient** downloads the file via HTTPS to the media directory
-8. **Sonarr/Radarr** imports the file into the organized library
+4. **Sonarr/Radarr** selects the best release and writes a `.torrent` file to `/downloads/watch/`
+5. **RDTClient** detects the file in the watch folder and sends the magnet to Real-Debrid
+6. **Real-Debrid** processes the torrent on their servers (cached content is instant)
+7. **RDTClient** (AutoImport) downloads the completed file via HTTPS to the category folder
+8. **Sonarr/Radarr** scans the download folder and imports the file into the organized library
 9. **Bazarr** detects the new file and fetches subtitles
 10. **Jellyfin** notices the library change and updates its catalog
 11. **User streams** via Jellyfin on LG TV, phone, or browser
@@ -202,12 +211,19 @@ networks:
 | Service      | Status | Notes                                    |
 |--------------|--------|------------------------------------------|
 | Jellyfin     | ✅     | Direct play only; no HW transcoding yet  |
-| Sonarr       | ✅     | Connected to Prowlarr + RDTClient        |
-| Radarr       | ✅     | Connected to Prowlarr + RDTClient        |
+| Sonarr       | ✅     | Torrent Blackhole → RDTClient watch folder |
+| Radarr       | ✅     | Torrent Blackhole → RDTClient watch folder |
 | Bazarr       | ✅     | Connected to Sonarr/Radarr APIs          |
-| Prowlarr     | ✅     | FlareSolverr proxy configured            |
-| RDTClient    | ✅     | Real-Debrid active (~$3/mo)             |
+| Prowlarr     | ✅     | 8 indexers synced to Sonarr + Radarr     |
+| RDTClient    | ✅     | AutoImport=on, watch folder active       |
 | FlareSolverr | ✅     | Running as proxy for Prowlarr            |
+
+### Current Content
+
+| Title | Type | Added | Status |
+|-------|------|-------|--------|
+| Godzilla Minus One (2023) | Movie | June 26, 2026 | Searching |
+| Bleach — TYBW S17 (Cour 1) | TV | June 26, 2026 | Monitoring |
 
 ---
 

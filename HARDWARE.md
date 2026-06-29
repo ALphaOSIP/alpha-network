@@ -13,7 +13,7 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 | **alphapi5** | General-purpose server | Ubuntu 24.04.1 LTS | — | 4× Cortex-A76 @ 2.4 GHz | 8 GB | ✅ Online |
 | **alphamox** | Proxmox hypervisor | Proxmox VE 9.1.1 | 10.0.1.108 | i5-4260U (2C/4T) @ 1.4 GHz | 8 GB DDR3 | ✅ Online |
 | **OPNsense (Dell OptiPlex)** | Router / Firewall | OPNsense | 10.0.1.1 | — | — | ✅ Online |
-| **alphapi3** | K3s worker node (offline) | Ubuntu 24.04 | 10.0.1.101 | 4× Cortex-A53 @ 1.4 GHz | 1 GB | ❌ Offline |
+| **alphapi3** | K3s worker node (offline) | Ubuntu 24.04 | 10.0.1.101 | 4× Cortex-A53 @ 1.4 GHz | 1 GB | ❌ Offline (travel plans) |
 | **TL-SG108E** | Managed switch | — | — | — | — | ✅ Online |
 | **EAP 670** | WiFi 6 AP | — | — | — | — | ✅ Online |
 
@@ -165,6 +165,20 @@ TL-SG108E (managed switch) — LAN
 |-----------|-------|
 | `10.0.1.103` | HP Printer |
 | `10.0.1.116` | HP Printer |
+
+---
+
+## 📡 Zigbee Coordinator
+
+| Spec | Detail |
+|------|--------|
+| **Device** | Sonoff Zigbee 3.0 USB Dongle Plus V2 (ZBDongle-E) |
+| **Firmware** | EmberZNet 7.4.5 |
+| **Connected To** | alphapi5 (Raspberry Pi 5) — USB `/dev/ttyUSB0` |
+| **Software** | zigbee2mqtt (Docker) |
+| **Network** | PAN 34179, channel 11 |
+| **Paired Devices** | 4 (Aqara temp/humidity, Third Reality motion, 2 TRÅDFRI bulbs) |
+| **Pending** | 3 motion sensors, 1 humidity, 2 door sensors |
 
 ---
 

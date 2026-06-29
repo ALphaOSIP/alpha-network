@@ -32,9 +32,11 @@
 
 ### VM 100 — Home Assistant OS
 
-- **OS**: Home Assistant OS 2026.4.3
+- **OS**: Home Assistant OS 2026.6.4 (upgraded from 2026.4.3)
 - **Resources**: 4 GB RAM, 32 GB disk
 - **Web UI**: http://10.0.1.154:8123
+- **Snapshot**: `pre-ha-setup` — clean state before MQTT/Zigbee/Tuya configuration
+- **Rollback note (June 25):** VM was rolled back to `pre-ha-setup` after `configuration.yaml` modifications caused a boot loop. MQTT must be configured via the HA UI in 2026.x.
 
 ### LXC 101 — Omada Controller (Docker)
 

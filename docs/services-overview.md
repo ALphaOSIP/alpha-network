@@ -42,12 +42,14 @@ A categorized index of every service running in the Alpha Network homelab.
 |---------|------------|---------|
 | **Home Assistant** | `http://10.0.1.154:8123` | Smart home hub |
 | **Eufy Security** | Via HA | 5 security cameras, doorbell |
-| **Gosund Bulbs** | `light.headlight`, `light.headlight_2` | Tuya smart bulbs |
-| **TP-Link KL130** | `light.bedroom_lamp` | Matter-compatible RGB bulb |
+| **Zigbee2MQTT** | `http://10.0.1.100:8080` | Zigbee coordinator (4 devices) |
+| **Mosquitto MQTT** | `10.0.1.100:1883` | MQTT broker, HA bridge |
+| **Gosund Bulbs** | *needs re-add* | Tuya smart bulbs (lost in rollback) |
+| **TP-Link KL130** | *needs re-add* | RGB bulb (lost in rollback) |
 | **LG TV** | `media_player.lg_webos_tv_55ur8000aua` | Smart TV control |
 | **Alexa Media Player** | Via HA | Voice control integration |
 
-> *See [smart-home.md](smart-home.md) for integration details.*
+> *See [smart-home.md](smart-home.md) for integration details. Tuya/Kasa integrations need re-adding after HA snapshot rollback.*
 
 ---
 

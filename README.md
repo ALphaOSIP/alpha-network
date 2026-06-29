@@ -26,7 +26,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | **alphapi3** | Secondary node / travel stick | Raspberry Pi 3 B+ | Ubuntu 24.04 |
 | **OPNsense** | Router/firewall | Dell OptiPlex | OPNsense |
 
-**20+ Docker containers** | **3-person Tailscale mesh** | **Home Assistant** | **50+ smart home entities**
+**25+ Docker containers** | **3-node Tailscale mesh** | **Home Assistant** | **Zigbee + MQTT + *arr integration**
 
 ---
 
@@ -37,7 +37,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | **🎬 Media** | Jellyfin, Sonarr, Radarr, Bazarr, Prowlarr, RDTClient, FlareSolverr |
 | **📸 Photos** | Immich (Google Photos alternative) |
 | **🎮 ROMs** | RomM (game ROM manager) |
-| **🏠 Smart Home** | Home Assistant, Eufy cameras, LG TV, lights (Tuya/Kasa), Alexa voice |
+| **🏠 Smart Home** | Home Assistant, Eufy cameras, LG TV, Zigbee sensors (Aqara, Third Reality, TRÅDFRI bulbs), MQTT, Alexa voice |
 | **🌐 Network** | Pi-hole (DNS), Omada (WiFi management), Tailscale (mesh VPN) |
 | **🤖 Automation** | n8n, cron-based housekeeping |
 | **📡 Monitoring** | Uptime Kuma, custom health check scripts |
@@ -88,6 +88,13 @@ Internet
 | [services/monitoring.md](services/monitoring.md) | Uptime, health checks |
 | [docs/remote-access.md](docs/remote-access.md) | Tailscale & VPN setup |
 | [docs/security.md](docs/security.md) | Firewalls, access control, secrets |
+| [CHANGELOG.md](CHANGELOG.md) | Weekly update log |
+
+---
+
+## 📋 Changelog
+
+Major changes are logged weekly. See [CHANGELOG.md](CHANGELOG.md) for the full history.
 
 ---
 
