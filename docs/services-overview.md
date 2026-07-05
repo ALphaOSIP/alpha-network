@@ -42,7 +42,7 @@ A categorized index of every service running in the Alpha Network homelab.
 |---------|------------|---------|
 | **Home Assistant** | `http://10.0.1.154:8123` | Smart home hub |
 | **Eufy Security** | Via HA | 5 security cameras, doorbell |
-| **Zigbee2MQTT** | `http://10.0.1.100:8080` | Zigbee coordinator (4 devices) |
+| **Zigbee2MQTT** | `http://10.0.1.100:8080` | Zigbee coordinator (7 devices) |
 | **Mosquitto MQTT** | `10.0.1.100:1883` | MQTT broker, HA bridge |
 | **Gosund Bulbs** | *needs re-add* | Tuya smart bulbs (lost in rollback) |
 | **TP-Link KL130** | *needs re-add* | RGB bulb (lost in rollback) |

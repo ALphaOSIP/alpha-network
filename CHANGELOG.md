@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-07-05 — More Zigbee Devices, Media Library Growth
+
+### 🏠 Smart Home
+- **3 new Zigbee devices paired** (now 7 total):
+  - 2× TRÅDFRI color bulbs (#3 and #4) — hue/sat/brightness
+  - 1× Third Reality motion sensor (#2)
+- **Home Assistant** continues running fine, no rollback issues this week
+- Tuya/Kasa integrations still pending re-add from June rollback
+
+### 🎬 Media Stack
+- **Radarr expanded to 5 movies** (was 1):
+  - **Michael** (2026) — Michael Jackson biopic, monitored
+  - **Hoppers** (2026) — Pixar film, monitored
+  - **The Drama** (2026) — new release, monitored
+  - **Pulp Fiction** (1994) — added to library (unmonitored)
+  - Godzilla Minus One (2023) — still monitoring
+- **Sonarr expanded to 3 series** (was 1):
+  - **Euphoria (US)** — HBO — S3 monitored, 6/8 eps downloaded (13.2 GB)
+  - **Industry** (2020) — HBO — S4 monitored
+  - Bleach (2004) — S17 TYBW monitored (existing)
+- **All *arr services** healthy and downloading
+
+### 🔧 Infrastructure
+- **14 Docker containers** running stable (was previously listed as 25+ in README — corrected)
+- All services healthy across the stack
+
+---
+
 ## 2026-06-28 — Zigbee Network Live & *Arr Pipeline Fix
 
 ### 🏠 Smart Home

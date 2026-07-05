@@ -92,7 +92,7 @@ The key architectural distinction of this setup is the use of **Real-Debrid** as
   - Indexers: Provided by Prowlarr (sync enabled)
   - Root folder: `/tv`
   - Quality profile: HD - 720p/1080p
-- **Current library:** Bleach (seasons 1-17, only S17 TYBW monitored)
+- **Current library:** Bleach (seasons 1-17, only S17 TYBW monitored), Euphoria (US, S3 — 6/8 eps downloaded), Industry (S4)
 - **Docker Image:** `linuxserver/sonarr:latest` (ARM64)
 
 ---
@@ -107,7 +107,7 @@ The key architectural distinction of this setup is the use of **Real-Debrid** as
   - Indexers: Provided by Prowlarr (sync enabled)
   - Root folder: `/movies`
   - Quality profile: HD - 720p/1080p
-- **Current library:** Godzilla Minus One (2023)
+- **Current library:** Michael (2026), Hoppers (2026), The Drama (2026), Pulp Fiction (1994), Godzilla Minus One (2023) — 5 movies total
 - **Docker Image:** `linuxserver/radarr:latest` (ARM64)
 
 ---
@@ -222,8 +222,14 @@ networks:
 
 | Title | Type | Added | Status |
 |-------|------|-------|--------|
-| Godzilla Minus One (2023) | Movie | June 26, 2026 | Searching |
-| Bleach — TYBW S17 (Cour 1) | TV | June 26, 2026 | Monitoring |
+| Godzilla Minus One (2023) | Movie | Jun 26, 2026 | Monitored |
+| Michael (2026) | Movie | Jul 2026 | Monitored — searching |
+| Hoppers (2026) | Movie | Jul 2026 | Monitored — searching |
+| The Drama (2026) | Movie | Jul 2026 | Monitored — searching |
+| Pulp Fiction (1994) | Movie | Jul 2026 | Unmonitored |
+| Bleach — TYBW S17 (Cour 1) | TV | Jun 26, 2026 | Monitoring |
+| Euphoria (US) — S3 | TV | Jul 2026 | 6/8 eps downloaded (13.2 GB) |
+| Industry — S4 | TV | Jul 2026 | Monitoring |
 
 ---
 

@@ -27,11 +27,14 @@ A Sonoff Zigbee 3.0 USB Dongle Plus V2 (ZBDongle-E, EmberZNet 7.4.5 firmware) is
 | Device | Address | Type | Status |
 |--------|---------|------|--------|
 | **Aqara WSDCGQ11LM** | `0x00158d008c7eae5d` | Temp/humidity/pressure sensor | ✅ Paired |
-| **Third Reality 3RMS16BZ** | `0xb40e060fffe707f1` | Wireless motion sensor | ✅ Paired |
+| **Third Reality 3RMS16BZ #1** | `0xb40e060fffe707f1` | Wireless motion sensor | ✅ Paired |
+| **Third Reality 3RMS16BZ #2** | `0x282c02bfffeaccf2` | Wireless motion sensor | ✅ Paired (new) |
 | **TRÅDFRI Bulb 1** | `0x7cb94c6867d60000` | Color bulb (hue/sat/brightness) | ✅ Paired |
 | **TRÅDFRI Bulb 2** | `0x7cb94c6803180000` | Color bulb (hue/sat/brightness) | ✅ Paired |
+| **TRÅDFRI Bulb 3** | `0x7cb94c67c3ae0000` | Color bulb (hue/sat/brightness) | ✅ Paired (new) |
+| **TRÅDFRI Bulb 4** | `0x7cb94c6857810000` | Color bulb (hue/sat/brightness) | ✅ Paired (new) |
 
-**Pending:** 3 motion sensors, 1 humidity sensor, 2 door sensors — waiting to be paired.
+**Pending:** 2 motion sensors, 1 humidity sensor, 2 door sensors — waiting to be paired.
 
 #### Pairing New Devices
 
