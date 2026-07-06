@@ -10,7 +10,8 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
 | Device | Role | OS | IP | CPU | RAM | Status |
 |--------|------|----|----|-----|-----|--------|
-| **alphapi5** | General-purpose server | Ubuntu 24.04.1 LTS | — | 4× Cortex-A76 @ 2.4 GHz | 8 GB | ✅ Online |
+| **alphamobile-1 (Latitude)** | Heavy lifter server | Ubuntu 24.04 LTS | 10.0.1.176 | i7-9850H (6C/12T) @ 4.6 GHz | ~7.5 GB | ✅ Online |
+| **alphapi5** | Lightweight orchestration server | Ubuntu 24.04.1 LTS | 10.0.1.100 | 4× Cortex-A76 @ 2.4 GHz | 8 GB | ✅ Online |
 | **alphamox** | Proxmox hypervisor | Proxmox VE 9.1.1 | 10.0.1.108 | i5-4260U (2C/4T) @ 1.4 GHz | 8 GB DDR3 | ✅ Online |
 | **OPNsense (Dell OptiPlex)** | Router / Firewall | OPNsense | 10.0.1.1 | — | — | ✅ Online |
 | **alphapi3** | K3s worker node (offline) | Ubuntu 24.04 | 10.0.1.101 | 4× Cortex-A53 @ 1.4 GHz | 1 GB | ❌ Offline (travel plans) |
@@ -64,6 +65,47 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 | Home Assistant | VM | 4 GB | 32 GB | Primary home automation |
 | Omada Controller | LXC | — | — | TP-Link SDN controller |
 
+
+## 💻 alphamobile-1 — Dell Latitude 5501
+
+| Spec | Detail |
+|------|--------|
+| **Model** | Dell Latitude 5501 |
+| **CPU** | Intel Core i7-9850H (6 cores, 12 threads @ up to 4.6 GHz) |
+| **RAM** | ~7.5 GB |
+| **Storage** | 238 GB NVMe SSD |
+| **OS** | Ubuntu 24.04 LTS |
+| **Hostname** | `alphamobile-1` |
+| **IP Address** | `10.0.1.176` (LAN) · `100.82.167.20` (Tailscale) |
+| **Uptime** | Since migration (~May 2026) |
+| **Form Factor** | Repurposed laptop (lid closed, headless) |
+
+### Role
+
+The Latitude is the **heavy lifter** — it runs CPU/IO-intensive services that the Pi 5's ARM architecture struggles with:
+
+- **Jellyfin** — hardware-accelerated video transcoding (Intel Quick Sync)
+- **Immich** — photo ML (facial recognition, object detection)
+- **PostgreSQL + Redis** — database backend for services
+- **n8n** — workflow automation
+- **FreshRSS, RomM, Homepage, Dozzle, Watchtower**
+
+### Migration Story
+
+Originally everything ran on the Pi 5. As the homelab grew, three bottlenecks became clear:
+
+| Bottleneck | Why It Mattered | How the Latitude Fixed It |
+|------------|----------------|---------------------------|
+| **ARM transcoding** | Jellyfin had to software-transcode every video — 100% CPU on a single stream | x86 + Quick Sync = hardware-accelerated, near-zero CPU |
+| **RAM pressure** | Immich ML + Jellyfin + *arr stack left only 3.5 GB free | 7.5 GB available, plenty of headroom |
+| **SD card writes** | Database services constantly write to disk — SD cards die fast | NVMe SSD, designed for sustained I/O |
+
+The migration moved all heavyweight services to the Latitude (now accessed at `10.0.1.176`), leaving the Pi 5 to handle lightweight orchestration — *arr stack, Zigbee coordinator, Pi-hole, RDTClient, Eufy bridge.
+
+### Cross-Host Routing Note
+
+Due to a switch-level quirk, the Pi 5 cannot reach the Latitude on the local subnet directly. All cross-host traffic routes through Tailscale (`100.82.167.20`). See [hardware/latitude.md](hardware/latitude.md) for details.
+
 ---
 
 ## 🌐 OPNsense — Dell OptiPlex Router/Firewall
@@ -86,7 +128,8 @@ OPNsense (Dell OptiPlex) — WAN
     │
     ▼
 TL-SG108E (managed switch) — LAN
-    ├── alphapi5 (eth0)
+    ├── alphamobile-1 (Latitude 5501 — 10.0.1.176)
+    ├── alphapi5 (10.0.1.100)
     ├── alphamox (10.0.1.108)
     ├── alphapi3 (10.0.1.101) — OFFLINE
     ├── EAP 670 (WiFi 6 AP)

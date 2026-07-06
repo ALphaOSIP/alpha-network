@@ -2,7 +2,21 @@
 
 ## Overview
 
-The Raspberry Pi 5 serves as the primary homelab server, running a diverse stack of containerized services including media streaming, photo management, network security (Pi-hole), home automation, and a lightweight Kubernetes (K3s) cluster. All services are managed via Docker Compose with persistent storage on both SD card and a USB-attached SSD.
+The Raspberry Pi 5 serves as the lightweight orchestrator for the homelab, running containerized services including media automation, network security (Pi-hole), home automation bridging, and Zigbee coordination. All services are managed via Docker Compose across both the Pi 5 and the Dell Latitude 5501 heavy lifter.
+
+---
+
+## Role Change: The Migration
+
+Originally the Pi 5 ran everything. In mid-2026, CPU/IO-heavy services (Jellyfin, Immich, n8n, RomM, FreshRSS) migrated to a Dell Latitude 5501 (i7-9850H, x86) to overcome three bottlenecks:
+
+| Bottleneck | How the Latitude Fixed It |
+|------------|---------------------------|
+| **ARM software transcoding** — 100% CPU on a single Jellyfin stream | Intel Quick Sync = hardware-accelerated, near-zero CPU |
+| **RAM pressure** — Immich ML + Jellyfin + *arr left only 3.5 GB free | 7.5 GB available on the Latitude |
+| **SD card writes** — database services wear out SD cards fast | NVMe SSD on the Latitude |
+
+The Pi 5 now handles **lightweight orchestration**: *arr stack, Zigbee coordinator, Pi-hole, RDTClient, Eufy bridge, FlareSolverr, Uptime Kuma, Ntfy, Watchtower. See [latitude.md](latitude.md) for the heavy lifter details.
 
 ---
 
@@ -88,13 +102,12 @@ Default policies: incoming **deny**, outgoing **allow**.
 
 ## Running Services (Docker Containers)
 
-All services run as individual Docker Compose stacks, each in their own directory with a dedicated `compose.yml` (or `docker-compose.yml`) file.
+> **Since the migration**, Jellyfin, Immich, RomM, n8n, FreshRSS, Homepage, and Dozzle now run on the [Dell Latitude 5501](latitude.md). The Pi 5 handles the lightweight orchestration layer.
 
-### Media Stack (arr-suite + Jellyfin)
+### Media Automation (arr-suite)
 
 | Service | Purpose |
 |---|---|
-| **jellyfin** | Media server (movies, TV, music) |
 | **sonarr** | TV series automatic downloader |
 | **radarr** | Movie automatic downloader |
 | **bazarr** | Subtitle management (automatic download & sync) |
@@ -102,33 +115,19 @@ All services run as individual Docker Compose stacks, each in their own director
 | **rdtclient** | Real-Debrid torrent client bridge |
 | **flaresolverr** | Cloudflare challenge solver for indexers |
 
-### Photo Management
-
-| Service | Purpose |
-|---|---|
-| **immich-server** | Self-hosted Google Photos alternative |
-| **immich-postgres** | PostgreSQL database for Immich |
-| **immich-redis** | Redis cache for Immich |
-| **immich-machine-learning** | ML-based image classification & face recognition |
-
-### Gaming
-
-| Service | Purpose |
-|---|---|
-| **romm** | ROM manager for retro game emulation |
-| **romm-db** | MariaDB database for RomM |
-
 ### Network & DNS
 
 | Service | Purpose |
 |---|---|
 | **pihole** | Network-wide ad blocking & DNS sinkhole |
 
-### Automation
+### Smart Home Bridge
 
 | Service | Purpose |
 |---|---|
-| **n8n** | Workflow automation (Zapier-like, self-hosted) |
+| **eufy-security-ws** | Eufy camera → Home Assistant bridge (port 3002) |
+| **zigbee2mqtt** | Zigbee coordinator → MQTT bridge (port 8080) |
+| **mosquitto** | MQTT message broker |
 
 ### Monitoring
 
@@ -141,24 +140,13 @@ All services run as individual Docker Compose stacks, each in their own director
 | Service | Purpose |
 |---|---|
 | **portainer** | Docker management UI |
+| **watchtower** | Auto-update Docker containers |
 
 ### Notifications
 
 | Service | Purpose |
 |---|---|
-| **ntfy** | Push notification server (mobile push via ntfy.sh or self-hosted) |
-
-### RSS
-
-| Service | Purpose |
-|---|---|
-| **freshrss** | RSS/Atom feed aggregator |
-
-### Smart Home
-
-| Service | Purpose |
-|---|---|
-| **eufy-security-ws** | WebSocket bridge for Eufy security cameras/devices |
+| **ntfy** | Push notification server (mobile push via ntfy.sh)
 
 ---
 

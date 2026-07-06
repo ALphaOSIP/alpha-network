@@ -1,6 +1,6 @@
 # 🏠 Alpha Network Homelab
 
-> **Infrastructure tinkering. Smart home automation. Media streaming. All from a Pi 5, a salvaged Mac Mini, and an old OptiPlex.**
+> **Infrastructure tinkering. Smart home automation. Media streaming. From a Pi 5 orchestrating to a Latitude crunching.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -21,7 +21,8 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 
 | System | Role | Platform | OS |
 |--------|------|----------|----|
-| **alphapi5** | Primary server | Raspberry Pi 5 (8GB) | Ubuntu 24.04 |
+| **alphamobile-1 (Latitude)** | Heavy lifter server | Dell Latitude 5501 (i7-9850H) | Ubuntu 24.04 |
+| **alphapi5** | Orchestration server | Raspberry Pi 5 (8GB) | Ubuntu 24.04 |
 | **alphamox** | Hypervisor | Mac Mini (Late 2014) | Proxmox VE 9.1 |
 | **alphapi3** | Secondary node / travel stick | Raspberry Pi 3 B+ | Ubuntu 24.04 |
 | **OPNsense** | Router/firewall | Dell OptiPlex | OPNsense |
@@ -57,13 +58,11 @@ Internet
                │
                ▼
          [TL-SG108E Switch]
-          /     │      \
-         ▼      ▼      ▼
-      Pi 5   Mac Mini  EAP 670
-   (Server)  (Proxmox)  (WiFi)
-      │
-      ▼
-   Pi 3 (secondary)
+          /    │    │    \
+         ▼     ▼    ▼     ▼
+    Latitude  Pi 5  Mac Mini  EAP 670
+   (Heavy) (Orch.) (Proxmox)  (WiFi)
+
 ```
 
 > *A proper SVG diagram is in `images/topology.svg`.*
@@ -77,7 +76,7 @@ Internet
 | [HARDWARE.md](HARDWARE.md) | Every physical thing with specs |
 | [NETWORK.md](NETWORK.md) | IP scheme, VLANs, firewall rules |
 | [hardware/pi5.md](hardware/pi5.md) | Pi 5 — the workhorse |
-| [hardware/mac-mini.md](hardware/mac-mini.md) | Mac Mini Proxmox setup |
+| [hardware/latitude.md](hardware/latitude.md) | Dell Latitude 5501 — the heavy lifter |
 | [hardware/optiplex.md](hardware/optiplex.md) | OPNsense router |
 | [hardware/pi3.md](hardware/pi3.md) | Pi 3 — retired & travel plans |
 | [services/media-stack.md](services/media-stack.md) | Jellyfin + *arr automation |

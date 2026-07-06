@@ -24,17 +24,13 @@ The **alpha-network** is a homelab network operating on the `10.0.1.0/24` subnet
     10.0.1.0/24 LAN         WAN (ISP)
           │
     [TL-SG108E Switch]
-     /     │      │     \
-    │      │      │      │
-  Pi 5  Mac Mini  EAP 670  Pi 3
- .100   .108     (WiFi)   .101
+     /     │   │    │     \
+    │      │   │    │      │
+Latitude Pi 5 Mac Mini EAP 670  Pi 3
+ .176   .100  .108   (WiFi)  .101
    │
    ├── Pi-hole .253 (macvlan DNS)
-   ├── RomM :3000
-   ├── Jellyfin :8096
-   ├── Uptime Kuma :3001
-   ├── Immich :2283
-   └── Portainer :9000
+   └── Docker services (heavy)
 ```
 
 ---
@@ -43,11 +39,12 @@ The **alpha-network** is a homelab network operating on the `10.0.1.0/24` subnet
 
 | Device | Model / Spec | Role |
 |--------|-------------|------|
-| **OPNsense** | Dell OptiPlex | Router, DHCP server, stateful firewall, WireGuard endpoint |
-| **alphapi5** | Raspberry Pi 5 | Primary Docker server (25+ containers), Pi-hole host |
+| **OPNsense** | Dell OptiPlex | Router, DHCP server, stateful firewall |
+| **alphamobile-1** | Dell Latitude 5501 (i7-9850H) | Heavy lifter — transcoding, ML, DBs |
+| **alphapi5** | Raspberry Pi 5 | Orchestration — *arr, Zigbee, DNS |
 | **alphapi3** | Raspberry Pi 3 | Secondary node (currently offline) |
 | **alphamox** | Mac Mini | Proxmox hypervisor, Omada Controller (LXC), HA VM |
-| **TL-SG108E** | TP-Link 8-port | Unmanaged Gigabit switch (no VLANs configured) |
+| **TL-SG108E** | TP-Link 8-port | Managed Gigabit switch |
 | **EAP 670** | TP-Link Omada | WiFi 6 access point (PoE powered) |
 
 ---
@@ -57,7 +54,8 @@ The **alpha-network** is a homelab network operating on the `10.0.1.0/24` subnet
 | Device | IP | Purpose |
 |--------|-----|---------|
 | OPNsense | `10.0.1.1` | Router, DHCP, firewall |
-| alphapi5 | `10.0.1.100` | Primary Docker server |
+| alphamobile-1 | `10.0.1.176` | Latitude heavy lifter — Jellyfin, Immich, n8n |
+| alphapi5 | `10.0.1.100` | Orchestration — *arr, Zigbee, DNS, RDTClient |
 | alphapi3 | `10.0.1.101` | Secondary node (offline) |
 | HP Printer 1 | `10.0.1.103` | Office printer |
 | alphamox | `10.0.1.108` | Proxmox hypervisor |

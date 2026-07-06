@@ -8,7 +8,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **Jellyfin** | `http://10.0.1.100:8096` | Media streaming (movies, TV, music) |
+| **Jellyfin** | `http://10.0.1.176:8096` | Media streaming (movies, TV, music) |
 | **Sonarr** | `http://10.0.1.100:8989` | TV show automation |
 | **Radarr** | `http://10.0.1.100:7878` | Movie automation |
 | **Bazarr** | `http://10.0.1.100:6767` | Subtitle management |
@@ -24,7 +24,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **Immich** | `http://10.0.1.100:2283` | Google Photos alternative, ML-powered |
+| **Immich** | `http://10.0.1.176:2283` | Google Photos alternative, ML-powered |
 
 ---
 
@@ -32,7 +32,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **RomM** | `http://10.0.1.100:3000` | Game ROM manager & library |
+| **RomM** | `http://10.0.1.176:3000` | Game ROM manager & library |
 
 ---
 
@@ -69,7 +69,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **n8n** | `http://10.0.1.100:5678` | Workflow automation |
+| **n8n** | `http://10.0.1.176:5678` | Workflow automation |
 | **Goodnight House** | Cron (Mac Mini) | 2am lights/TV shutdown |
 | **DeepSeek Monitor** | Cron (Pi 5) | Daily API balance check |
 | **Network Monitor** | Cron (Pi 5) | Service health checks |
@@ -94,7 +94,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **FreshRSS** | `http://10.0.1.100:8082` | RSS feed reader |
+| **FreshRSS** | `http://10.0.1.176:8082` | RSS feed reader |
 
 ---
 
@@ -113,7 +113,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | What | Where |
 |------|-------|
-| **Docker host** | `ssh alpha@10.0.1.100` |
+| **Docker hosts** | `ssh alpha@10.0.1.100` (Pi 5) · `ssh alpha@10.0.1.176` (Latitude) |
 | **Proxmox** | `ssh root@10.0.1.108` |
 | **HA CLI** | `ssh root@10.0.1.108` → `qm terminal 100` |
 | **All services** | [Uptime Kuma](http://10.0.1.100:3001) |
