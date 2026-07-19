@@ -27,7 +27,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | **alphapi3** | Secondary node / travel stick | Raspberry Pi 3 B+ | Ubuntu 24.04 |
 | **OPNsense** | Router/firewall | Dell OptiPlex | OPNsense |
 
-**14 Docker containers** | **3-node Tailscale mesh** | **Home Assistant** | **Zigbee + MQTT + *arr integration**
+**15 Docker containers** | **3-node Tailscale mesh** | **Home Assistant** | **Zigbee + MQTT + *arr integration**
 
 ---
 

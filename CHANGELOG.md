@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-07-19 — 8th Zigbee Device, Docker Fleet Grows to 15
+
+### 🏠 Smart Home
+- **1 new Zigbee device paired** (now 8 total) — device type unknown
+- **Home Assistant** continues running stable
+- Tuya/Kasa integrations still pending re-add from June rollback
+
+### 🎬 Media Stack
+- **Sonarr** still tracking 3 series — no change
+- **Radarr** count could not be fetched this week
+
+### 🔧 Infrastructure
+- **15 Docker containers** running (was 14) — 1 new service added
+- All services healthy
+
+---
+
 ## 2026-07-05 — More Zigbee Devices, Media Library Growth
 
 ### 🏠 Smart Home

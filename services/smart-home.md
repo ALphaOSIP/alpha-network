@@ -32,9 +32,10 @@ A Sonoff Zigbee 3.0 USB Dongle Plus V2 (ZBDongle-E, EmberZNet 7.4.5 firmware) is
 | **TRÅDFRI Bulb 1** | `0x7cb94c6867d60000` | Color bulb (hue/sat/brightness) | ✅ Paired |
 | **TRÅDFRI Bulb 2** | `0x7cb94c6803180000` | Color bulb (hue/sat/brightness) | ✅ Paired |
 | **TRÅDFRI Bulb 3** | `0x7cb94c67c3ae0000` | Color bulb (hue/sat/brightness) | ✅ Paired (new) |
-| **TRÅDFRI Bulb 4** | `0x7cb94c6857810000` | Color bulb (hue/sat/brightness) | ✅ Paired (new) |
-
-**Pending:** 2 motion sensors, 1 humidity sensor, 2 door sensors — waiting to be paired.
+|| **TRÅDFRI Bulb 4** | `0x7cb94c6857810000` | Color bulb (hue/sat/brightness) | ✅ Paired (new) |
+|| **New device (#8)** | *unknown* | *unknown* | ✅ Paired (new) |
+|
+|**Pending:** 2 motion sensors, 1 humidity sensor, 2 door sensors — waiting to be paired.
 
 #### Pairing New Devices
 

@@ -1,6 +1,6 @@
 # 🖥️ Alpha-Network Hardware Inventory
 
-> Last updated: 2026-06-20
+> Last updated: 2026-07-19
 
 This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
@@ -220,7 +220,7 @@ TL-SG108E (managed switch) — LAN
 | **Connected To** | alphapi5 (Raspberry Pi 5) — USB `/dev/ttyUSB0` |
 | **Software** | zigbee2mqtt (Docker) |
 | **Network** | PAN 34179, channel 11 |
-| **Paired Devices** | 4 (Aqara temp/humidity, Third Reality motion, 2 TRÅDFRI bulbs) |
+| **Paired Devices** | 8 (1 Aqara sensor, 2 Third Reality motions, 4 TRÅDFRI bulbs, 1 unknown)|
 | **Pending** | 3 motion sensors, 1 humidity, 2 door sensors |
 
 ---
