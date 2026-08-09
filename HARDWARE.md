@@ -55,6 +55,7 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 | **OS** | Windows |
 | **Status** | 🟡 Personal machine — usually off; SSH-monitor only |
 | **Policy** | **NO agents, NO services, NO Hermes installs.** Joseph's personal gaming PC. SSH key access (`id_alphamain` on alphapi5) for connectivity checks + on-request help only. |
+| **Wake-on-LAN** | Planned (Joseph to enable in BIOS + Windows). Pi has `wakeonlan` ready — magic packet to `30:c5:99:ef:5c:b4`. LAN-only, no WAN forward (security note). |
 
 > **Added 2026-08-09** — was invisible to all monitoring (checks only probed hardcoded hosts). Tracked in [CHANGELOG.md](CHANGELOG.md).
 
