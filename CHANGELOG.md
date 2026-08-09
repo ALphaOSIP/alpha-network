@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-08-09 — ALphaMAIN Added, VLANs Configured, Monitoring Blind Spot Fixed
+
+### 🔧 Infrastructure
+- **NEW MACHINE: ALphaMAIN** (10.0.1.141, ASUSTek OUI `30:C5:99`, MAC `30:c5:99:ef:5c:b4`) — new main machine, role TBD. First seen on DHCP Aug 9 2026 (lease renewed ~08:00 EDT), sitting on the old Omada LXC IP (.141 freed when Omada was removed).
+- **Monitoring blind spot found & documented:** weekly doc cron reported "no new hardware" because the check only counts Zigbee/*arr/Docker — it never scans the LAN. ALphaMAIN was invisible to all monitoring. Fix: LAN host scan added to weekly cron + ALphaMAIN added to daily connectivity check.
+- **VLANs now live on OPNsense:** vlan01 Trusted (10.0.10.0/24), vlan02 Services (10.0.20.0/24), vlan03 IoT (10.0.30.0/24), vlan04 Guest (10.0.40.0/24). All four gateways UP. No devices moved yet.
+- Pi 3 confirmed back online at **10.0.1.158** (docs said .101/offline)
+- EAP 670 confirmed at **10.0.1.157** (docs said DHCP-assigned unknown)
+- Omada references cleaned from docs (controller removed everywhere Aug 2026)
+
+### 🏠 Smart Home
+- Zigbee verified at **8 paired devices** (1 Aqara WSDCGQ11LM, 2 Third Reality 3RMS16BZ motion, 4 Third Reality 3RCB01057Z bulbs, 1 eWeLink CK-TLSR8656)
+
+### 📡 Network Audit (2026-08-09)
+Full DHCP lease table reviewed: 30+ devices on LAN including phones (S21 Ultra, Z-Fold3, S23 Ultra, iPhone, Watch), Fire TV Cube 2022, Fire TV Stick 4K, Echo/Fire TV devices, Kasa smart plug (HS300), Honeywell thermostat (Resideo), Xbox, LG TV (LG Innotek), tablets. Consumer devices — not tracked in repo inventory.
+
+---
+
 ## 2026-07-19 — 8th Zigbee Device, Docker Fleet Grows to 15
 
 ### 🏠 Smart Home

@@ -21,6 +21,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 
 | System | Role | Platform | OS |
 |--------|------|----------|----|
+| **ALphaMAIN** | New main machine (role TBD) | ASUS (model TBD) | TBD |
 | **alphamobile-1 (Latitude)** | Heavy lifter server | Dell Latitude 5501 (i7-9850H) | Ubuntu 24.04 |
 | **alphapi5** | Orchestration server | Raspberry Pi 5 (8GB) | Ubuntu 24.04 |
 | **alphamox** | Hypervisor | Mac Mini (Late 2014) | Proxmox VE 9.1 |
@@ -63,6 +64,8 @@ Internet
     Latitude  Pi 5  Mac Mini  EAP 670
    (Heavy) (Orch.) (Proxmox)  (WiFi)
 
+   ALphaMAIN (.141) — NEW Aug 2026
+   VLANs on OPNsense: Trusted/Services/IoT/Guest
 ```
 
 > *A proper SVG diagram is in `images/topology.svg`.*

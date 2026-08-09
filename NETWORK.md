@@ -27,8 +27,9 @@ The **alpha-network** is a homelab network operating on the `10.0.1.0/24` subnet
      /     │   │    │     \
     │      │   │    │      │
 Latitude Pi 5 Mac Mini EAP 670  Pi 3
- .176   .100  .108   (WiFi)  .101
+ .176   .100  .108   .157  .158
    │
+   ├── ALphaMAIN .141 (NEW Aug 2026)
    ├── Pi-hole .253 (macvlan DNS)
    └── Docker services (heavy)
 ```
@@ -40,12 +41,13 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | Device | Model / Spec | Role |
 |--------|-------------|------|
 | **OPNsense** | Dell OptiPlex | Router, DHCP server, stateful firewall |
+| **ALphaMAIN** | ASUS (model TBD) | New main machine — role TBD (added Aug 2026) |
 | **alphamobile-1** | Dell Latitude 5501 (i7-9850H) | Heavy lifter — transcoding, ML, DBs |
 | **alphapi5** | Raspberry Pi 5 | Orchestration — *arr, Zigbee, DNS |
-| **alphapi3** | Raspberry Pi 3 | Secondary node (currently offline) |
-| **alphamox** | Mac Mini | Proxmox hypervisor, Omada Controller (LXC), HA VM |
+| **alphapi3** | Raspberry Pi 3 | Secondary node (travel stick plans) |
+| **alphamox** | Mac Mini | Proxmox hypervisor, HA VM |
 | **TL-SG108E** | TP-Link 8-port | Managed Gigabit switch |
-| **EAP 670** | TP-Link Omada | WiFi 6 access point (PoE powered) |
+| **EAP 670** | TP-Link Omada | WiFi 6 access point (PoE powered, standalone) |
 
 ---
 
@@ -54,20 +56,35 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | Device | IP | Purpose |
 |--------|-----|---------|
 | OPNsense | `10.0.1.1` | Router, DHCP, firewall |
+| ALphaMAIN | `10.0.1.141` | **NEW Aug 2026** — main machine (ASUS), role TBD |
 | alphamobile-1 | `10.0.1.176` | Latitude heavy lifter — Jellyfin, Immich, n8n |
 | alphapi5 | `10.0.1.100` | Orchestration — *arr, Zigbee, DNS, RDTClient |
-| alphapi3 | `10.0.1.101` | Secondary node (offline) |
+| alphapi3 | `10.0.1.158` | Secondary node (travel stick plans) |
 | HP Printer 1 | `10.0.1.103` | Office printer |
 | alphamox | `10.0.1.108` | Proxmox hypervisor |
 | HP Printer 2 | `10.0.1.116` | Secondary printer |
-| Omada LXC | `10.0.1.141` | Omada SDN WiFi controller |
-| LG TV | `10.0.1.143` | Smart TV |
+| LG TV | `10.0.1.138` | Smart TV (LG Innotek OUI — was .143) |
 | HA VM | `10.0.1.154` | Home Assistant |
 | Eufy HomeBase | `10.0.1.187` | Camera bridge |
 | Pi-hole | `10.0.1.253` | DNS resolver (macvlan container on Pi 5) |
-| EAP 670 | `10.0.1.x` | WiFi access point (DHCP-assigned) |
+| EAP 670 | `10.0.1.157` | WiFi access point |
 
-> **Note:** The EAP 670 receives its address via DHCP — check OPNsense lease table or Omada Controller for current IP.
+> **Note:** The EAP 670 now sits at `10.0.1.157` (verified Aug 2026).
+
+---
+
+## VLANs (configured Aug 2026)
+
+OPNsense has four VLAN interfaces (confirmed live 2026-08-09). No static mappings yet — devices must be moved/assigned explicitly.
+
+| VLAN | Name | Subnet | OPNsense IP |
+|------|------|--------|-------------|
+| vlan01 | Trusted | `10.0.10.0/24` | `10.0.10.1` |
+| vlan02 | Services | `10.0.20.0/24` | `10.0.20.1` |
+| vlan03 | IoT | `10.0.30.0/24` | `10.0.30.1` |
+| vlan04 | Guest | `10.0.40.0/24` | `10.0.40.1` |
+
+> All four gateways serve the OPNsense web UI on :80/:443. As of 2026-08-09 no LAN device has been moved to a VLAN yet (everything still on the flat 10.0.1.0/24).
 
 ---
 
@@ -170,20 +187,17 @@ WireGuard is configured on OPNsense but is **not actively used**. Tailscale repl
 
 ## WiFi
 
-- **Access Point:** TP-Link EAP 670 (WiFi 6, 2.4/5 GHz)
+- **Access Point:** TP-Link EAP 670 (WiFi 6, 2.4/5 GHz) at `10.0.1.157`
 - **Power:** PoE (via included PoE injector or PoE switch — currently via injector)
-- **Management:** Omada SDN Controller
-- **Controller address:** `http://10.0.1.141:8088`
-- **Controller host:** LXC container on alphamox (Proxmox)
+- **Management:** Standalone mode (Omada controller removed Aug 2026 — EAP runs autonomously with cached config)
 
 ### SSIDs
 
 | SSID | Band | Purpose |
 |------|------|---------|
-| `Alpha` | 2.4/5 GHz | Main network, bridged to LAN, clients get DHCP from OPNsense |
-| `Alpha-IoT` | 2.4 GHz | IoT devices (cameras, smart plugs, printers) — isolated if VLANs are configured |
+| `Prince Network` | 2.4/5 GHz | Main network, bridged to LAN, clients get DHCP from OPNsense |
 
-> Currently no VLANs are configured — both SSIDs bridge to the same flat `10.0.1.0/24` network.
+> No VLANs are configured for WiFi clients yet — the EAP bridges to the flat `10.0.1.0/24` network. (OPNsense-side VLANs exist as of Aug 2026, see [VLANs](#vlans-configured-aug-2026) — nothing is routed to them yet.)
 
 ---
 
@@ -231,13 +245,14 @@ The Raspberry Pi 5 (`10.0.1.100`) runs Docker with the following publicly access
 - Web UI: `http://10.0.1.253/admin`
 
 ### Adding a new device to the network
-1. Physically connect (Ethernet) or connect to the `Alpha` SSID (WiFi)
+1. Physically connect (Ethernet) or connect to the `Prince Network` SSID (WiFi)
 2. Device gets a DHCP lease in the `10.0.1.50–254` range
 3. Optionally create a **DHCP reservation** in OPNsense for a static IP
 4. Point DNS to `10.0.1.253` manually if the device uses static networking
+5. **Document it** — add to [HARDWARE.md](HARDWARE.md) / [NETWORK.md](NETWORK.md) so the weekly cron and monitoring know it exists
 
 ### Troubleshooting connectivity
-1. **Is the device on the right network?** Check that WiFi SSID is `Alpha` (not guest)
+1. **Is the device on the right network?** Check that WiFi SSID is `Prince Network` (not guest)
 2. **Does it have an IP?** Run `ip a` (Linux) or `ipconfig` (Windows) — should be `10.0.1.x`
 3. **Can it reach the gateway?** `ping 10.0.1.1`
 4. **DNS working?** `nslookup google.com 10.0.1.253` — should resolve

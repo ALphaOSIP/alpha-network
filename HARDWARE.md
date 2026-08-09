@@ -1,6 +1,6 @@
 # 🖥️ Alpha-Network Hardware Inventory
 
-> Last updated: 2026-07-19
+> Last updated: 2026-08-09
 
 This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
@@ -10,11 +10,12 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
 | Device | Role | OS | IP | CPU | RAM | Status |
 |--------|------|----|----|-----|-----|--------|
+| **ALphaMAIN** | New main machine (ASUS) | TBD | 10.0.1.141 | TBD | TBD | 🟡 New — seen on DHCP, currently asleep |
 | **alphamobile-1 (Latitude)** | Heavy lifter server | Ubuntu 24.04 LTS | 10.0.1.176 | i7-9850H (6C/12T) @ 4.6 GHz | ~7.5 GB | ✅ Online |
 | **alphapi5** | Lightweight orchestration server | Ubuntu 24.04.1 LTS | 10.0.1.100 | 4× Cortex-A76 @ 2.4 GHz | 8 GB | ✅ Online |
 | **alphamox** | Proxmox hypervisor | Proxmox VE 9.1.1 | 10.0.1.108 | i5-4260U (2C/4T) @ 1.4 GHz | 8 GB DDR3 | ✅ Online |
 | **OPNsense (Dell OptiPlex)** | Router / Firewall | OPNsense | 10.0.1.1 | — | — | ✅ Online |
-| **alphapi3** | K3s worker node (offline) | Ubuntu 24.04 | 10.0.1.101 | 4× Cortex-A53 @ 1.4 GHz | 1 GB | ❌ Offline (travel plans) |
+| **alphapi3** | Secondary node (travel stick plans) | Ubuntu 24.04 | 10.0.1.158 | 4× Cortex-A53 @ 1.4 GHz | 1 GB | ✅ Online (was .101, now .158) |
 | **TL-SG108E** | Managed switch | — | — | — | — | ✅ Online |
 | **EAP 670** | WiFi 6 AP | — | — | — | — | ✅ Online |
 
@@ -40,6 +41,21 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 |--------|------|----------|------|-----------|
 | SD Card | microSD | 256 GB | 28 GB | ~235 GB |
 | Samsung EVO 870 | USB SSD | 1 TB | — | External |
+
+---
+
+## 🆕 ALphaMAIN — New ASUS Machine
+
+| Spec | Detail |
+|------|--------|
+| **Vendor** | ASUSTek Computer Inc. (OUI `30:C5:99`) |
+| **MAC Address** | `30:c5:99:ef:5c:b4` |
+| **IP Address** | `10.0.1.141` (DHCP — old Omada LXC IP, freed Aug 2026) |
+| **First Seen** | ~Aug 9 2026 (DHCP lease renewed Aug 9 ~08:00 EDT) |
+| **Status** | 🟡 New — asleep when probed (no ping/SSH/ports), role TBD |
+| **Notable** | Follows ALpha* naming convention (ALphaMAIN). Likely Joseph's new main desktop/laptop (ASUS). SSH key not yet provisioned from alphapi5. |
+
+> **Added 2026-08-09** — this machine was invisible to all monitoring (connectivity check, weekly doc cron) because those checks only probe hardcoded hosts and never scan the LAN. Tracked in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -126,15 +142,21 @@ ISP ONT (Fiber modem)
     ▼
 OPNsense (Dell OptiPlex) — WAN
     │
-    ▼
-TL-SG108E (managed switch) — LAN
-    ├── alphamobile-1 (Latitude 5501 — 10.0.1.176)
-    ├── alphapi5 (10.0.1.100)
-    ├── alphamox (10.0.1.108)
-    ├── alphapi3 (10.0.1.101) — OFFLINE
-    ├── EAP 670 (WiFi 6 AP)
-    ├── HP Printer (10.0.1.103)
-    └── HP Printer (10.0.1.116)
+    ├── LAN (10.0.1.0/24)
+    │   ├── ALphaMAIN (10.0.1.141) — NEW Aug 2026
+    │   ├── alphamobile-1 (Latitude 5501 — 10.0.1.176)
+    │   ├── alphapi5 (10.0.1.100)
+    │   ├── alphamox (10.0.1.108)
+    │   ├── alphapi3 (10.0.1.158)
+    │   ├── EAP 670 (WiFi 6 AP)
+    │   ├── HP Printer (10.0.1.103)
+    │   ├── HP Printer (10.0.1.116)
+    │   └── Eufy HomeBase 2 (10.0.1.187)
+    │
+    ├── VLAN 1 — Trusted (10.0.10.0/24)
+    ├── VLAN 2 — Services (10.0.20.0/24)
+    ├── VLAN 3 — IoT (10.0.30.0/24)
+    └── VLAN 4 — Guest (10.0.40.0/24)
 ```
 
 ### DHCP Scope
@@ -147,7 +169,7 @@ TL-SG108E (managed switch) — LAN
 
 ---
 
-## 🧊 alphapi3 — Raspberry Pi 3 (Offline)
+## 🧊 alphapi3 — Raspberry Pi 3 (Back Online)
 
 | Spec | Detail |
 |------|--------|
@@ -156,9 +178,9 @@ TL-SG108E (managed switch) — LAN
 | **CPU** | 4× ARM Cortex-A53 @ 1.4 GHz |
 | **Kernel** | — (Ubuntu 24.04) |
 | **OS** | Ubuntu 24.04 |
-| **IP Address** | `10.0.1.101` |
+| **IP Address** | `10.0.1.158` (was `10.0.1.101`) |
 | **MAC Address** | `B8:27:EB:CF:91:C8` |
-| **Status** | ❌ Powered off |
+| **Status** | ✅ Online — up 6+ weeks |
 | **Last Temperature** | ~48 °C idle |
 
 ### Storage
@@ -220,7 +242,7 @@ TL-SG108E (managed switch) — LAN
 | **Connected To** | alphapi5 (Raspberry Pi 5) — USB `/dev/ttyUSB0` |
 | **Software** | zigbee2mqtt (Docker) |
 | **Network** | PAN 34179, channel 11 |
-| **Paired Devices** | 8 (1 Aqara sensor, 2 Third Reality motions, 4 TRÅDFRI bulbs, 1 unknown)|
+| **Paired Devices** | 8 (1 Aqara WSDCGQ11LM temp/humidity, 2 Third Reality 3RMS16BZ motion, 4 Third Reality 3RCB01057Z Smart Color Bulb, 1 eWeLink CK-TLSR8656) |
 | **Pending** | 3 motion sensors, 1 humidity, 2 door sensors |
 
 ---
