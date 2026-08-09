@@ -41,7 +41,7 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | Device | Model / Spec | Role |
 |--------|-------------|------|
 | **OPNsense** | Dell OptiPlex | Router, DHCP server, stateful firewall |
-| **ALphaMAIN** | ASUS (model TBD) | New main machine — role TBD (added Aug 2026) |
+| **ALphaMAIN** | ASUS (model TBD) | Personal gaming PC — SSH-monitor only, no agents (added Aug 2026) |
 | **alphamobile-1** | Dell Latitude 5501 (i7-9850H) | Heavy lifter — transcoding, ML, DBs |
 | **alphapi5** | Raspberry Pi 5 | Orchestration — *arr, Zigbee, DNS |
 | **alphapi3** | Raspberry Pi 3 | Secondary node (travel stick plans) |

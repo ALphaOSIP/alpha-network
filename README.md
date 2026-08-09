@@ -21,7 +21,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 
 | System | Role | Platform | OS |
 |--------|------|----------|----|
-| **ALphaMAIN** | New main machine (role TBD) | ASUS (model TBD) | TBD |
+| **ALphaMAIN** | Personal gaming PC (Windows) | ASUS (model TBD) | SSH-monitor only, no agents |
 | **alphamobile-1 (Latitude)** | Heavy lifter server | Dell Latitude 5501 (i7-9850H) | Ubuntu 24.04 |
 | **alphapi5** | Orchestration server | Raspberry Pi 5 (8GB) | Ubuntu 24.04 |
 | **alphamox** | Hypervisor | Mac Mini (Late 2014) | Proxmox VE 9.1 |

@@ -10,7 +10,7 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
 | Device | Role | OS | IP | CPU | RAM | Status |
 |--------|------|----|----|-----|-----|--------|
-| **ALphaMAIN** | New main machine (ASUS) | TBD | 10.0.1.141 | TBD | TBD | 🟡 New — seen on DHCP, currently asleep |
+| **ALphaMAIN** | Personal gaming PC | Windows | 10.0.1.141 | TBD | TBD | 🟡 New — personal machine, SSH-monitor only |
 | **alphamobile-1 (Latitude)** | Heavy lifter server | Ubuntu 24.04 LTS | 10.0.1.176 | i7-9850H (6C/12T) @ 4.6 GHz | ~7.5 GB | ✅ Online |
 | **alphapi5** | Lightweight orchestration server | Ubuntu 24.04.1 LTS | 10.0.1.100 | 4× Cortex-A76 @ 2.4 GHz | 8 GB | ✅ Online |
 | **alphamox** | Proxmox hypervisor | Proxmox VE 9.1.1 | 10.0.1.108 | i5-4260U (2C/4T) @ 1.4 GHz | 8 GB DDR3 | ✅ Online |
@@ -44,7 +44,7 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
 ---
 
-## 🆕 ALphaMAIN — New ASUS Machine
+## 🆕 ALphaMAIN — Personal Gaming PC
 
 | Spec | Detail |
 |------|--------|
@@ -52,10 +52,11 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 | **MAC Address** | `30:c5:99:ef:5c:b4` |
 | **IP Address** | `10.0.1.141` (DHCP — old Omada LXC IP, freed Aug 2026) |
 | **First Seen** | ~Aug 9 2026 (DHCP lease renewed Aug 9 ~08:00 EDT) |
-| **Status** | 🟡 New — asleep when probed (no ping/SSH/ports), role TBD |
-| **Notable** | Follows ALpha* naming convention (ALphaMAIN). Likely Joseph's new main desktop/laptop (ASUS). SSH key not yet provisioned from alphapi5. |
+| **OS** | Windows |
+| **Status** | 🟡 Personal machine — usually off; SSH-monitor only |
+| **Policy** | **NO agents, NO services, NO Hermes installs.** Joseph's personal gaming PC. SSH key access (`id_alphamain` on alphapi5) for connectivity checks + on-request help only. |
 
-> **Added 2026-08-09** — this machine was invisible to all monitoring (connectivity check, weekly doc cron) because those checks only probe hardcoded hosts and never scan the LAN. Tracked in [CHANGELOG.md](CHANGELOG.md).
+> **Added 2026-08-09** — was invisible to all monitoring (checks only probed hardcoded hosts). Tracked in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 

@@ -7,7 +7,7 @@
 ## 2026-08-09 — ALphaMAIN Added, VLANs Configured, Monitoring Blind Spot Fixed
 
 ### 🔧 Infrastructure
-- **NEW MACHINE: ALphaMAIN** (10.0.1.141, ASUSTek OUI `30:C5:99`, MAC `30:c5:99:ef:5c:b4`) — new main machine, role TBD. First seen on DHCP Aug 9 2026 (lease renewed ~08:00 EDT), sitting on the old Omada LXC IP (.141 freed when Omada was removed).
+- **NEW MACHINE: ALphaMAIN** (10.0.1.141, ASUSTek OUI `30:C5:99`, MAC `30:c5:99:ef:5c:b4`) — **Joseph's personal gaming PC (Windows)**. First seen on DHCP Aug 9 2026, sitting on the old Omada LXC IP (.141 freed when Omada was removed). Policy: NO agents/services/Hermes installs inside — SSH key access (`id_alphamain` on alphapi5) for connectivity checks + on-request help only.
 - **Monitoring blind spot found & documented:** weekly doc cron reported "no new hardware" because the check only counts Zigbee/*arr/Docker — it never scans the LAN. ALphaMAIN was invisible to all monitoring. Fix: LAN host scan added to weekly cron + ALphaMAIN added to daily connectivity check.
 - **VLANs now live on OPNsense:** vlan01 Trusted (10.0.10.0/24), vlan02 Services (10.0.20.0/24), vlan03 IoT (10.0.30.0/24), vlan04 Guest (10.0.40.0/24). All four gateways UP. No devices moved yet.
 - Pi 3 confirmed back online at **10.0.1.158** (docs said .101/offline)
