@@ -22,13 +22,14 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | System | Role | Platform | OS |
 |--------|------|----------|----|
 | **ALphaMAIN** | Personal gaming PC (Windows) | ASUS (model TBD) | SSH-monitor only, no agents |
+| **ALpha-Server** | Frigate NVR / GPU box | Custom AMD (Ryzen 5 3600 + RX 580) | Ubuntu 24.04 |
 | **alphamobile-1 (Latitude)** | Heavy lifter server | Dell Latitude 5501 (i7-9850H) | Ubuntu 24.04 |
 | **alphapi5** | Orchestration server | Raspberry Pi 5 (8GB) | Ubuntu 24.04 |
 | **alphamox** | Hypervisor | Mac Mini (Late 2014) | Proxmox VE 9.1 |
 | **alphapi3** | Secondary node / travel stick | Raspberry Pi 3 B+ | Ubuntu 24.04 |
 | **OPNsense** | Router/firewall | Dell OptiPlex | OPNsense |
 
-**15 Docker containers** | **3-node Tailscale mesh** | **Home Assistant** | **Zigbee + MQTT + *arr integration**
+**16 Docker containers** (15 on Pi 5 + Frigate on ALpha-Server) | **4-node Tailscale mesh** | **Home Assistant** | **Zigbee + MQTT + *arr integration**
 
 ---
 
@@ -40,7 +41,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | **📸 Photos** | Immich (Google Photos alternative) |
 | **🎮 ROMs** | RomM (game ROM manager) |
 | **🏠 Smart Home** | Home Assistant, Eufy cameras, LG TV, Zigbee sensors (Aqara, Third Reality, TRÅDFRI bulbs), MQTT, Alexa voice |
-| **🌐 Network** | Pi-hole (DNS), Omada (WiFi management), Tailscale (mesh VPN) |
+| **🌐 Network** | Pi-hole (DNS), EAP 670 (WiFi AP, standalone — Omada removed), Tailscale (mesh VPN) |
 | **🤖 Automation** | n8n, cron-based housekeeping |
 | **📡 Monitoring** | Uptime Kuma, custom health check scripts |
 | **📰 Content** | FreshRSS (RSS reader) |
@@ -64,7 +65,8 @@ Internet
     Latitude  Pi 5  Mac Mini  EAP 670
    (Heavy) (Orch.) (Proxmox)  (WiFi)
 
-   ALphaMAIN (.141) — NEW Aug 2026
+   ALphaMAIN (.233) — NEW Aug 2026 (was .141)
+   ALpha-Server (.135) — NEW Aug 2026 (Frigate NVR)
    VLANs on OPNsense: Trusted/Services/IoT/Guest
 ```
 

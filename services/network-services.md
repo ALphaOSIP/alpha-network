@@ -8,12 +8,12 @@
 - **Address:** `10.0.1.253`
 - **Web Admin:** [http://10.0.1.253/admin](http://10.0.1.253/admin)
 
-## Omada Controller
+## EAP 670 (Standalone)
 
-- **Type:** Software controller
-- **Purpose:** Manages TP-Link EAP 670 WiFi 6 access point
-- **Deployment:** Docker container on LXC 101 (Mac Mini)
-- **Web UI:** [http://10.0.1.141:8088](http://10.0.1.141:8088)
+- **Type:** WiFi 6 access point (TP-Link EAP 670)
+- **Purpose:** Main WiFi — SSID `Prince Network` (2.4/5 GHz)
+- **Management:** Standalone mode — Omada controller removed Aug 2026, EAP runs with cached config
+- **Address:** `10.0.1.157`
 
 ## Tailscale
 

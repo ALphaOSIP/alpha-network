@@ -1,6 +1,6 @@
 # 🖥️ Alpha-Network Hardware Inventory
 
-> Last updated: 2026-08-09
+> Last updated: 2026-08-23
 
 This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
@@ -10,7 +10,8 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
 | Device | Role | OS | IP | CPU | RAM | Status |
 |--------|------|----|----|-----|-----|--------|
-| **ALphaMAIN** | Personal gaming PC | Windows | 10.0.1.141 | TBD | TBD | 🟡 New — personal machine, SSH-monitor only |
+| **ALphaMAIN** | Personal gaming PC | Windows | 10.0.1.233 | TBD | TBD | 🟡 Personal machine, SSH-monitor only — IP moved from .141 (Aug 2026) |
+| **ALpha-Server** | Frigate NVR / GPU box | Ubuntu 24.04 | 10.0.1.135 | Ryzen 5 3600 (6C/12T) | 16 GB | ✅ Online — new (Aug 2026) |
 | **alphamobile-1 (Latitude)** | Heavy lifter server | Ubuntu 24.04 LTS | 10.0.1.176 | i7-9850H (6C/12T) @ 4.6 GHz | ~7.5 GB | ✅ Online |
 | **alphapi5** | Lightweight orchestration server | Ubuntu 24.04.1 LTS | 10.0.1.100 | 4× Cortex-A76 @ 2.4 GHz | 8 GB | ✅ Online |
 | **alphamox** | Proxmox hypervisor | Proxmox VE 9.1.1 | 10.0.1.108 | i5-4260U (2C/4T) @ 1.4 GHz | 8 GB DDR3 | ✅ Online |
@@ -50,14 +51,43 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 |------|--------|
 | **Vendor** | ASUSTek Computer Inc. (OUI `30:C5:99`) |
 | **MAC Address** | `30:c5:99:ef:5c:b4` |
-| **IP Address** | `10.0.1.141` (DHCP — old Omada LXC IP, freed Aug 2026) |
+| **IP Address** | `10.0.1.233` (DHCP — was `10.0.1.141`; lease moved ~Aug 20 2026, verified via ARP Aug 23) |
 | **First Seen** | ~Aug 9 2026 (DHCP lease renewed Aug 9 ~08:00 EDT) |
 | **OS** | Windows |
 | **Status** | 🟡 Personal machine — usually off; SSH-monitor only |
 | **Policy** | **NO agents, NO services, NO Hermes installs.** Joseph's personal gaming PC. SSH key access (`id_alphamain` on alphapi5) for connectivity checks + on-request help only. |
 | **Wake-on-LAN** | Planned (Joseph to enable in BIOS + Windows). Pi has `wakeonlan` ready — magic packet to `30:c5:99:ef:5c:b4`. LAN-only, no WAN forward (security note). |
 
-> **Added 2026-08-09** — was invisible to all monitoring (checks only probed hardcoded hosts). Tracked in [CHANGELOG.md](CHANGELOG.md).
+> **Added 2026-08-09** — was invisible to all monitoring (checks only probed hardcoded hosts). Tracked in [CHANGELOG.md](CHANGELOG.md). **IP moved to .233 Aug 2026** — docs updated 2026-08-23.
+
+---
+
+## 🆕 ALpha-Server — Frigate NVR / GPU Box
+
+| Spec | Detail |
+|------|--------|
+| **Vendor** | ASUSTek Computer Inc. (OUI `D4:5D:64`) — ASUS board NIC |
+| **MAC Address** | `d4:5d:64:aa:45:b1` |
+| **IP Address** | `10.0.1.135` (DHCP, enp7s0) |
+| **Hostname** | `ALpha-Server` (SSH alias `alpha-server` on alphapi5, user `alphaserver`) |
+| **OS** | Ubuntu 24.04 x86_64, kernel 7.0.0-29-generic (built Aug 12 2026) |
+| **CPU** | AMD Ryzen 5 3600 (6 cores, 12 threads) |
+| **RAM** | 16 GB (15 GiB usable) |
+| **Storage** | ~256 GB SSD (`/dev/sdb2`, 27 GB used / 211 GB free) |
+| **GPU** | AMD RX 580 (VAAPI hardware acceleration for Frigate) |
+| **Tailscale** | `100.123.100.38` |
+| **Docker** | Frigate NVR (`ghcr.io/blakeblackshear/frigate:stable`, healthy, `restart=unless-stopped`) |
+| **First Seen** | Home dir created ~Aug 1 2026; SSH alias on alphapi5 dated Aug 2 2026; kernel updated Aug 12; up since ~Aug 20 2026 |
+| **Status** | ✅ Online — up 2+ days |
+
+### Role
+
+- **Frigate NVR** — AI object detection on the Eufy camera streams. Consumes RTSP from the Pi 5 eufy bridge (`rtsp://10.0.1.100:8554/...`); cameras include backyard, doorbell, and more (config in `/home/alphaserver/services/frigate/config/config.yml`).
+- **Detectors:** CPU (3 threads) + VAAPI on the RX 580.
+- **Storage:** `/home/alphaserver/media/frigate/storage` → `/media/frigate` (14-day alert/detection retention).
+- Also hosts Hermes + Claude Code and the `lan-scan/` tooling; `services/` dir has configs for baby-tracker, immich, jellyfin, n8n (not all running yet — only Frigate is live as of 2026-08-23).
+
+> **Added 2026-08-23** — set up ~Aug 1-4 but **never documented**: the Aug 9 LAN investigation knew the IP (it sat in the weekly check's KNOWN_HOSTS) yet it never reached HARDWARE.md/NETWORK.md. Found 2026-08-23 via ARP/MAC scan after the weekly lease fetch failed. Tracked in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -145,7 +175,8 @@ ISP ONT (Fiber modem)
 OPNsense (Dell OptiPlex) — WAN
     │
     ├── LAN (10.0.1.0/24)
-    │   ├── ALphaMAIN (10.0.1.141) — NEW Aug 2026
+    │   ├── ALphaMAIN (10.0.1.233) — NEW Aug 2026 (was .141)
+    │   ├── ALpha-Server (10.0.1.135) — NEW Aug 2026 (Frigate NVR)
     │   ├── alphamobile-1 (Latitude 5501 — 10.0.1.176)
     │   ├── alphapi5 (10.0.1.100)
     │   ├── alphamox (10.0.1.108)
@@ -251,7 +282,7 @@ OPNsense (Dell OptiPlex) — WAN
 
 ## ⚡ Power & Environment
 
-- All online nodes have been **up for 57+ days** (since last maintenance).
+- All online nodes have been **up for 57+ days** (since last maintenance) — except ALpha-Server, which joined ~Aug 20 2026.
 - alphapi5 idles at ~61 °C (under typical passive cooling).
-- alphapi3 is powered off awaiting re-purpose.
+- alphapi3 is back online at `10.0.1.158` (was thought powered off — see status above).
 - No UPS currently documented.

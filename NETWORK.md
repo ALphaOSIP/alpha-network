@@ -29,7 +29,8 @@ The **alpha-network** is a homelab network operating on the `10.0.1.0/24` subnet
 Latitude Pi 5 Mac Mini EAP 670  Pi 3
  .176   .100  .108   .157  .158
    │
-   ├── ALphaMAIN .141 (NEW Aug 2026)
+   ├── ALphaMAIN .233 (NEW Aug 2026 — was .141)
+   ├── ALpha-Server .135 (NEW Aug 2026 — Frigate NVR)
    ├── Pi-hole .253 (macvlan DNS)
    └── Docker services (heavy)
 ```
@@ -41,7 +42,8 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | Device | Model / Spec | Role |
 |--------|-------------|------|
 | **OPNsense** | Dell OptiPlex | Router, DHCP server, stateful firewall |
-| **ALphaMAIN** | ASUS (model TBD) | Personal gaming PC — SSH-monitor only, no agents (added Aug 2026) |
+| **ALphaMAIN** | ASUS (model TBD) | Personal gaming PC — SSH-monitor only, no agents (added Aug 2026, IP .233) |
+| **ALpha-Server** | Custom AMD (Ryzen 5 3600, RX 580) | Frigate NVR / GPU box — Ubuntu 24.04 (added Aug 2026) |
 | **alphamobile-1** | Dell Latitude 5501 (i7-9850H) | Heavy lifter — transcoding, ML, DBs |
 | **alphapi5** | Raspberry Pi 5 | Orchestration — *arr, Zigbee, DNS |
 | **alphapi3** | Raspberry Pi 3 | Secondary node (travel stick plans) |
@@ -56,7 +58,8 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | Device | IP | Purpose |
 |--------|-----|---------|
 | OPNsense | `10.0.1.1` | Router, DHCP, firewall |
-| ALphaMAIN | `10.0.1.141` | **NEW Aug 2026** — main machine (ASUS), role TBD |
+| ALphaMAIN | `10.0.1.233` | **NEW Aug 2026** — main machine (ASUS); DHCP moved from `.141` (~Aug 20) |
+| ALpha-Server | `10.0.1.135` | **NEW Aug 2026** — Frigate NVR (Ryzen 5 3600, Ubuntu 24.04) |
 | alphamobile-1 | `10.0.1.176` | Latitude heavy lifter — Jellyfin, Immich, n8n |
 | alphapi5 | `10.0.1.100` | Orchestration — *arr, Zigbee, DNS, RDTClient |
 | alphapi3 | `10.0.1.158` | Secondary node (travel stick plans) |
@@ -93,6 +96,7 @@ OPNsense has four VLAN interfaces (confirmed live 2026-08-09). No static mapping
 - **Server:** OPNsense (ISC DHCP or Kea, depending on OPNsense version)
 - **Scope:** `10.0.1.50` – `10.0.1.254`
 - **Reservations:** All static IPs above are configured as DHCP reservations by MAC address
+- **⚠️ 2026-08-23 note:** reservations are NOT fully enforced — ALphaMAIN's lease moved `.141 → .233` despite the docs listing `.141` (OPNsense unreachable from the cron host to verify, so treat DHCP IPs as best-effort).
 - **Lease time:** 24 hours (default)
 - **DNS servers advertised:** `10.0.1.253` (Pi-hole) — single server handed out to force all DNS through Pi-hole
 
@@ -167,6 +171,7 @@ Tailscale is the primary remote access method — a WireGuard-based mesh VPN wit
 |------|----------|-------------|
 | alphapi5 | alphapi5 | `100.101.94.73` |
 | alphamox | alphamox | `100.124.155.110` |
+| ALpha-Server | alpha-server | `100.123.100.38` |
 | iPhone | — | `100.89.238.113` |
 
 **Subnet routing:** The Mac Mini (alphamox) is configured as a **subnet router** for `10.0.1.0/24`. This allows remote devices (e.g., iPhone) to reach LAN-only services like Home Assistant (`10.0.1.154:8123`) without exposing them to the internet.

@@ -4,6 +4,22 @@
 
 ---
 
+## 2026-08-23 — ALpha-Server Discovered & Documented, ALphaMAIN IP Moved, Frigate NVR Live
+
+### 🔧 Infrastructure
+- **NEW MACHINE: ALpha-Server** (`10.0.1.135`, MAC `d4:5d:64:aa:45:b1` ASUSTek, AMD Ryzen 5 3600 6C/12T, 16 GB RAM, ~256 GB SSD, AMD RX 580) — **Ubuntu 24.04 x86_64 Frigate NVR box**. Set up ~Aug 1-4 2026 (home dir + `alpha-server` SSH alias on alphapi5 date to Aug 2) but **was never documented**: the Aug 9 LAN investigation knew the IP (it's in the weekly check's `KNOWN_HOSTS`) yet it never reached HARDWARE.md/NETWORK.md. Found 2026-08-23 via ARP/MAC scan after the weekly lease fetch failed.
+- **New service: Frigate NVR** on ALpha-Server (`ghcr.io/blakeblackshear/frigate:stable`, healthy) — AI object detection on the Eufy camera RTSP streams (`rtsp://10.0.1.100:8554/...`), VAAPI hw accel on the RX 580, 14-day alert retention. First new service host since the Latitude. Tailscale `100.123.100.38`. Hermes + Claude Code installed; `lan-scan/` tooling lives here; `services/` dir also has (not-yet-running) configs for baby-tracker/immich/jellyfin/n8n.
+- **ALphaMAIN DHCP IP changed: `10.0.1.141` → `10.0.1.233`** (verified via ARP 2026-08-23 — `30:c5:99:ef:5c:b4` now on `.233`, `.141` empty). `.141` is now free; all Omada-era `.141:8088` references cleaned (network-services.md, mac-mini.md, services-overview.md, topology.svg → ALpha-Server box).
+- HARDWARE.md/NETWORK.md/README.md updated: ALpha-Server added (summary, topology, IP tables, Tailscale table); ALphaMAIN IPs corrected everywhere; smart-home.md gains a Frigate section.
+
+### 📡 Monitoring
+- **Weekly check blind spot #2 fixed:** this week's report said "NEW infra hosts: none" even though ALpha-Server was on the LAN and ALphaMAIN had moved — the OPNsense lease fetch failed and the script only logged the failure under the consumer-devices row, so the infra row printed a false `none`. The script now reports `UNKNOWN (lease fetch failed)` in the infra row on fetch failure, prompting manual investigation (that's how ALpha-Server was found this week).
+- Weekly check `KNOWN_HOSTS` updated: `.141` → `.233` (ALphaMAIN), `.135` retained (now documented).
+- Daily connectivity check updated: ALphaMAIN ping target `.141` → `.233`; ALpha-Server added via SSH (`alphaserver@10.0.1.135`).
+- Also fixed a stale doc claim: alphapi3 is online at `.158` (HARDWARE.md "Power & Environment" said powered off).
+
+---
+
 ## 2026-08-09 — ALphaMAIN Added, VLANs Configured, Monitoring Blind Spot Fixed
 
 ### 🔧 Infrastructure

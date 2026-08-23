@@ -38,10 +38,9 @@
 - **Snapshot**: `pre-ha-setup` — clean state before MQTT/Zigbee/Tuya configuration
 - **Rollback note (June 25):** VM was rolled back to `pre-ha-setup` after `configuration.yaml` modifications caused a boot loop. MQTT must be configured via the HA UI in 2026.x.
 
-### LXC 101 — Omada Controller (Docker)
+### ~~LXC 101 — Omada Controller~~ (removed Aug 2026)
 
-- **Software**: Omada Software Controller v5.15.x (via Docker)
-- **Web UI**: http://10.0.1.141:8088
+Omada controller was removed in Aug 2026; the EAP 670 now runs standalone with cached config. The old LXC IP `10.0.1.141` is no longer in use (briefly reused by ALphaMAIN, who has since moved to `.233` — see [HARDWARE.md](../HARDWARE.md)).
 
 ---
 
@@ -123,7 +122,7 @@ Tailscale is configured as a **subnet router** so devices on the Tailnet can rea
 ### Key Configuration Notes
 
 - **`--accept-routes=false`**: The Mac Mini does not accept routes from other subnet routers.
-- **`--advertise-routes=10.0.1.0/24`**: Advertises the local LAN so remote Tailscale nodes can reach devices like Home Assistant (`10.0.1.154`) and the Omada Controller (`10.0.1.141`).
+- **`--advertise-routes=10.0.1.0/24`**: Advertises the local LAN so remote Tailscale nodes can reach devices like Home Assistant (`10.0.1.154`) and ALpha-Server (`10.0.1.135`).
 - **Approval required**: In the [Tailscale Admin Console](https://login.tailscale.com), the advertised route must be approved (check the **Subnets** tab for the Mac Mini node).
 
 ### Persistent Service

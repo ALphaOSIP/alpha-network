@@ -63,6 +63,14 @@ To add a new Zigbee device:
 - **HomeBase:** Model T8010 at `10.0.1.187`
 - **Connection:** Cloud bridge via `eufy-security-ws` Docker container on the Pi 5 (port 3002). Handles 2FA and trusted device registration.
 
+### Frigate NVR (ALpha-Server)
+
+- **Deployment:** Docker on **ALpha-Server** (`10.0.1.135`), image `ghcr.io/blakeblackshear/frigate:stable` — healthy since ~Aug 20 2026
+- **Role:** AI NVR — object detection on the Eufy camera streams (backyard, doorbell, …)
+- **Camera input:** RTSP from the Pi 5 eufy bridge (`rtsp://10.0.1.100:8554/...`)
+- **HW accel:** VAAPI (AMD RX 580) + CPU detector (3 threads)
+- **Storage:** `/home/alphaserver/media/frigate/storage` → `/media/frigate` (14-day alert/detection retention)
+
 ### Tuya IoT Cloud *(needs re-add)*
 
 - Lost during HA snapshot rollback on June 25

@@ -58,7 +58,7 @@ A categorized index of every service running in the Alpha Network homelab.
 | Service | URL | Purpose |
 |---------|-----|---------|
 | **Pi-hole** | `http://10.0.1.253/admin` | DNS sinkhole, ad blocking |
-| **Omada Controller** | `http://10.0.1.141:8088` | WiFi management (EAP 670) |
+| **EAP 670** | `10.0.1.157` | WiFi 6 AP (standalone — Omada controller removed Aug 2026) |
 | **Tailscale** | Mesh VPN | Encrypted remote access |
 
 > *See [network-services.md](network-services.md) for setup details.*
