@@ -1,6 +1,6 @@
 # 🖥️ Alpha-Network Hardware Inventory
 
-> Last updated: 2026-08-23
+> Last updated: 2026-09-06
 
 This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
@@ -12,7 +12,7 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 |--------|------|----|----|-----|-----|--------|
 | **ALphaMAIN** | Personal gaming PC | Windows | 10.0.1.233 | TBD | TBD | 🟡 Personal machine, SSH-monitor only — IP moved from .141 (Aug 2026) |
 | **ALpha-Server** | Frigate NVR / GPU box | Ubuntu 24.04 | 10.0.1.135 | Ryzen 5 3600 (6C/12T) | 16 GB | ✅ Online — new (Aug 2026) |
-| **alphamobile-1 (Latitude)** | Heavy lifter server | Ubuntu 24.04 LTS | 10.0.1.176 | i7-9850H (6C/12T) @ 4.6 GHz | ~7.5 GB | ✅ Online |
+| **alphamobile-1 (Latitude)** | Heavy lifter server | Ubuntu 24.04 LTS | 10.0.1.176 | i7-9850H (6C/12T) @ 4.6 GHz | ~7.5 GB | 🔴 OFFLINE since 2026-08-20 — services down |
 | **alphapi5** | Lightweight orchestration server | Ubuntu 24.04.1 LTS | 10.0.1.100 | 4× Cortex-A76 @ 2.4 GHz | 8 GB | ✅ Online |
 | **alphamox** | Proxmox hypervisor | Proxmox VE 9.1.1 | 10.0.1.108 | i5-4260U (2C/4T) @ 1.4 GHz | 8 GB DDR3 | ✅ Online |
 | **OPNsense (Dell OptiPlex)** | Router / Firewall | OPNsense | 10.0.1.1 | — | — | ✅ Online |
@@ -125,12 +125,15 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 | **OS** | Ubuntu 24.04 LTS |
 | **Hostname** | `alphamobile-1` |
 | **IP Address** | `10.0.1.176` (LAN) · `100.82.167.20` (Tailscale) |
-| **Uptime** | Since migration (~May 2026) |
+| **Status** | 🔴 **OFFLINE** — left the network ~2026-08-20 03:25 EDT, has not returned (17 days as of 2026-09-06) |
+| **Uptime** | Was up since migration (~May 2026); unreachable since 2026-08-20 |
 | **Form Factor** | Repurposed laptop (lid closed, headless) |
 
 ### Role
 
 The Latitude is the **heavy lifter** — it runs CPU/IO-intensive services that the Pi 5's ARM architecture struggles with:
+
+> **⚠️ 2026-09-06: The Latitude is currently OFFLINE** (not on the network since ~2026-08-20 03:25 EDT). All services it hosted are therefore **down**: Jellyfin, Immich, PostgreSQL + Redis, n8n, FreshRSS, RomM, Homepage, Dozzle, Watchtower. Detection trail: Uptime Kuma went EHOSTUNREACH at 2026-08-20 03:25 (after being green Aug 5–19), Tailscale shows `alphamobile-1` offline (last seen 17d ago), and the 2026-09-06 ARP sweep gets no reply. Likely related to ALpha-Server being stood up ~Aug 20 — Joseph may intend ALpha-Server to take over these roles, but as of 2026-09-06 ALpha-Server runs **only Frigate** (its `services/` dir has immich/jellyfin/n8n compose configs that are NOT running). Action: power the Latitude back on, or finish migrating its services to ALpha-Server.
 
 - **Jellyfin** — hardware-accelerated video transcoding (Intel Quick Sync)
 - **Immich** — photo ML (facial recognition, object detection)
@@ -177,7 +180,7 @@ OPNsense (Dell OptiPlex) — WAN
     ├── LAN (10.0.1.0/24)
     │   ├── ALphaMAIN (10.0.1.233) — NEW Aug 2026 (was .141)
     │   ├── ALpha-Server (10.0.1.135) — NEW Aug 2026 (Frigate NVR)
-    │   ├── alphamobile-1 (Latitude 5501 — 10.0.1.176)
+    │   ├── alphamobile-1 (Latitude 5501 — 10.0.1.176) 🔴 OFFLINE since 2026-08-20
     │   ├── alphapi5 (10.0.1.100)
     │   ├── alphamox (10.0.1.108)
     │   ├── alphapi3 (10.0.1.158)
@@ -283,6 +286,7 @@ OPNsense (Dell OptiPlex) — WAN
 ## ⚡ Power & Environment
 
 - All online nodes have been **up for 57+ days** (since last maintenance) — except ALpha-Server, which joined ~Aug 20 2026.
+- **alphamobile-1 (Latitude) has been OFFLINE since ~2026-08-20** — see its section above. Its heavy services (Jellyfin, Immich, n8n, FreshRSS, RomM, etc.) are down with it; ALpha-Server (Frigate only) has not yet taken them over.
 - alphapi5 idles at ~61 °C (under typical passive cooling).
 - alphapi3 is back online at `10.0.1.158` (was thought powered off — see status above).
 - No UPS currently documented.

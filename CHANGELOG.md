@@ -4,6 +4,22 @@
 
 ---
 
+## 2026-09-06 — Latitude (alphamobile-1) OFFLINE Since Aug 20, Heavy Services Down; Monitoring Blind Spot #3 Fixed
+
+### 🔧 Infrastructure
+- **alphamobile-1 (Dell Latitude 5501, `10.0.1.176` / Tailscale `100.82.167.20`) has been OFFLINE since ~2026-08-20 03:25 EDT** — 17 days as of this check. Not on the LAN at all today (no ARP reply, absent from the root ARP sweep, direct TCP to its ports fails). Uptime Kuma flipped to `EHOSTUNREACH` at 2026-08-20 03:25 after being green Aug 5–19; Tailscale control plane agrees (`offline, last seen 17d ago`).
+- **All Latitude-hosted services are DOWN with it:** Jellyfin, Immich (photos/ML + its Postgres/Redis), n8n, FreshRSS, RomM, Homepage, Dozzle, Watchtower. Verified none of them moved: ALpha-Server (`.135`) runs **only Frigate** (its `services/` dir has immich/jellyfin/n8n compose configs — NOT running), and the Pi 5 doesn't serve them either.
+- **Timing suggests a relation to the ALpha-Server standup (~Aug 20):** likely powered down when the new box came up, but the migration is unfinished (Frigate only). **Action needed:** power the Latitude back on, or migrate Jellyfin/Immich/n8n/FreshRSS/RomM to ALpha-Server and retire it (added as a NETWORK.md "Future Improvements" item).
+- Docs corrected from "✅ Online" to **🔴 OFFLINE since 2026-08-20** across HARDWARE.md (summary, section, topology, Power & Environment), NETWORK.md (topology, role/IP tables, Tailscale table), README.md, and hardware/latitude.md. NETWORK.md's stale "Key Services (alphapi5)" table (claimed Jellyfin/RomM/Immich run on the Pi) fixed to the real Pi fleet (*arr, Zigbee/MQTT, RDTClient, Portainer, Uptime Kuma).
+- **No NEW infra hosts this week:** full ARP/MAC sweep (~27 live hosts) — every host outside the documented inventory is consumer-class (5× Amazon Fire TV/Echo, 2× TP-Link Kasa/Tapo, Apple TV/phone-class, Resideo thermostat, random-MAC mobiles, printers, Eufy HomeBase). ALphaMAIN (`.233`) not on LAN — normal (usually off). `.252` answers ICMP but has no MAC/ARP entry — router alias/phantom, not a host.
+
+### 📡 Monitoring
+- **Blind spot #3 found & fixed — "known host vanished" was invisible:** the weekly check only ever flagged *new* IPs, so a documented host dropping off the network (Latitude, ~Aug 20) sailed through the Aug 23 push and the Aug 30 run undetected while docs claimed ✅ Online. `weekly-doc-check.py` now runs a root ARP sweep of `10.0.1.0/24` every week and reports **"Known infra host MISSING from LAN"** for any always-on host (OPNsense, alphapi5, alphamox, ALpha-Server, HA VM, Latitude) not answering ARP. Re-run today correctly flags `10.0.1.176`.
+- **OPNsense SSH lease fetch still failing — 3rd consecutive week** (port 22 times out from alphapi5 *and* ALpha-Server; the anti-lockout rule allows 22 on LAN, so the router's SSH daemon is likely just stopped). The Aug 23 fix only made the failure visible — it never restored data. Script now falls back to the ARP sweep on fetch failure and lists every undocumented live host with MAC + vendor (this week: 14, all consumer-class). NETWORK.md maintenance notes updated: use the OPNsense web UI (`https://10.0.1.1`).
+- *arr API keys stale (cosmetic): the status script and Uptime Kuma both get 401 from Sonarr/Radarr (the containers themselves are UP) — movie/series counts show `?` until keys are refreshed. Zigbee still 8, Docker still 15, HA ✅.*
+
+---
+
 ## 2026-08-23 — ALpha-Server Discovered & Documented, ALphaMAIN IP Moved, Frigate NVR Live
 
 ### 🔧 Infrastructure

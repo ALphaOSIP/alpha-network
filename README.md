@@ -23,7 +23,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 |--------|------|----------|----|
 | **ALphaMAIN** | Personal gaming PC (Windows) | ASUS (model TBD) | SSH-monitor only, no agents |
 | **ALpha-Server** | Frigate NVR / GPU box | Custom AMD (Ryzen 5 3600 + RX 580) | Ubuntu 24.04 |
-| **alphamobile-1 (Latitude)** | Heavy lifter server | Dell Latitude 5501 (i7-9850H) | Ubuntu 24.04 |
+| **alphamobile-1 (Latitude)** | Heavy lifter server — 🔴 OFFLINE since 2026-08-20 | Dell Latitude 5501 (i7-9850H) | Ubuntu 24.04 |
 | **alphapi5** | Orchestration server | Raspberry Pi 5 (8GB) | Ubuntu 24.04 |
 | **alphamox** | Hypervisor | Mac Mini (Late 2014) | Proxmox VE 9.1 |
 | **alphapi3** | Secondary node / travel stick | Raspberry Pi 3 B+ | Ubuntu 24.04 |
@@ -47,6 +47,8 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | **📰 Content** | FreshRSS (RSS reader) |
 | **🔔 Notifications** | Ntfy (push notifications) |
 | **🐳 Management** | Portainer (Docker UI) |
+
+> **⚠️ Status (2026-09-06):** The Latitude (`.176`) has been offline since ~Aug 20 2026, so **Jellyfin, Immich, RomM, n8n and FreshRSS are currently DOWN**. The Pi 5 *arr stack, Pi-hole, Zigbee/MQTT, HA and Frigate (ALpha-Server) remain up. See [CHANGELOG.md](CHANGELOG.md).
 
 ---
 

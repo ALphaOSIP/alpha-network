@@ -104,6 +104,8 @@ Default policies: incoming **deny**, outgoing **allow**.
 
 > **Since the migration**, Jellyfin, Immich, RomM, n8n, FreshRSS, Homepage, and Dozzle now run on the [Dell Latitude 5501](latitude.md). The Pi 5 handles the lightweight orchestration layer.
 
+> **⚠️ 2026-09-06:** the Latitude has been **OFFLINE since ~2026-08-20**, so the migrated services (Jellyfin, Immich, RomM, n8n, FreshRSS, Homepage, Dozzle) are currently **DOWN**. See [latitude.md](latitude.md) / [CHANGELOG.md](../CHANGELOG.md).
+
 ### Media Automation (arr-suite)
 
 | Service | Purpose |

@@ -1,5 +1,7 @@
 # Dell Latitude 5501 — Heavy Lifter
 
+> **🔴 OFFLINE since ~2026-08-20 03:25 EDT** (verified 2026-09-06 — Uptime Kuma EHOSTUNREACH, Tailscale last seen 2026-08-20, no ARP reply). All services below are **DOWN** until this machine is powered back on or its workload is migrated to ALpha-Server. See [CHANGELOG.md](../CHANGELOG.md).
+
 ## Overview
 
 The Latitude 5501 started as a retired work laptop, now repurposed as the homelab's heavyweight server. It handles CPU-intensive services that the Pi 5's ARM chip struggles with — media transcoding, photo ML processing, and database workloads.
@@ -44,7 +46,7 @@ The Latitude solved all of this in one shot:
 
 ## Services Running
 
-The Latitude hosts the heavyweight services that *need* x86 power:
+The Latitude hosts the heavyweight services that *need* x86 power — **currently OFFLINE, so none of these are running (as of 2026-09-06)**:
 
 | Service | Port | Purpose |
 |---|---|---|
