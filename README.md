@@ -29,7 +29,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | **alphapi3** | Secondary node / travel stick | Raspberry Pi 3 B+ | Ubuntu 24.04 |
 | **OPNsense** | Router/firewall | Dell OptiPlex | OPNsense |
 
-**16 Docker containers** (15 on Pi 5 + Frigate on ALpha-Server) | **4-node Tailscale mesh** | **Home Assistant** | **Zigbee + MQTT + *arr integration**
+**20 Docker containers** (19 on Pi 5 + Frigate on ALpha-Server) | **4-node Tailscale mesh** | **Home Assistant** | **Zigbee + MQTT + *arr integration**
 
 ---
 
@@ -38,7 +38,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | Category | Services |
 |----------|----------|
 | **🎬 Media** | Jellyfin, Sonarr, Radarr, Bazarr, Prowlarr, RDTClient, FlareSolverr |
-| **📸 Photos** | Immich (Google Photos alternative) |
+| **📸 Photos** | Immich (Google Photos alternative — moved back to the Pi 5, Sep 2026) |
 | **🎮 ROMs** | RomM (game ROM manager) |
 | **🏠 Smart Home** | Home Assistant, Eufy cameras, LG TV, Zigbee sensors (Aqara, Third Reality, TRÅDFRI bulbs), MQTT, Alexa voice |
 | **🌐 Network** | Pi-hole (DNS), EAP 670 (WiFi AP, standalone — Omada removed), Tailscale (mesh VPN) |
@@ -48,7 +48,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | **🔔 Notifications** | Ntfy (push notifications) |
 | **🐳 Management** | Portainer (Docker UI) |
 
-> **⚠️ Status (2026-09-06):** The Latitude (`.176`) has been offline since ~Aug 20 2026, so **Jellyfin, Immich, RomM, n8n and FreshRSS are currently DOWN**. The Pi 5 *arr stack, Pi-hole, Zigbee/MQTT, HA and Frigate (ALpha-Server) remain up. See [CHANGELOG.md](CHANGELOG.md).
+> **⚠️ Status (2026-09-13):** **Immich has been migrated back to the Pi 5** (`.100:2283`) and is healthy again since 2026-09-08. The Latitude (`.176`) is still offline since ~Aug 20 2026, so **Jellyfin, RomM, n8n and FreshRSS remain DOWN**. The Pi 5 *arr stack, Pi-hole, Zigbee/MQTT, HA, Immich and Frigate (ALpha-Server) remain up. See [CHANGELOG.md](CHANGELOG.md).
 
 ---
 

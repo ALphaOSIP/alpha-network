@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-09-13 — Immich Migrated Back to the Pi 5 (4 Containers); Docker Fleet 15 → 19
+
+### 🔧 Infrastructure
+- **Immich moved from the (offline) Latitude back to the Pi 5** — the retire-the-Latitude plan is underway. All four containers (`immich_server` v3, `immich_machine_learning`, `immich_postgres`, `immich_redis`) have been running **healthy on alphapi5 (`10.0.1.100`)** since 2026-09-08 15:16 UTC. Compose re-fetched from the official `release` template on 2026-09-08 (watchtower opt-out labels added — Immich needs manual updates because of DB migrations). Library at `/mnt/nas-data/immich/library`, DB at `/mnt/nas-data/immich/postgres`.
+- **New Immich external library: the family "vault"** — `/mnt/nas-data/vault` is mounted **read-only** into `immich_server` (`/vault:ro`, added 2026-09-08) so the family archive is browsable in Immich without being mutated.
+- **Docker fleet on the Pi 5: 15 → 19 containers** (20 total including Frigate on ALpha-Server). The four Immich containers are the entire delta.
+- **go2rtc documented (was running undocumented since 2026-08-20):** `alexxit/go2rtc` on the Pi 5 is the RTSP restreamer behind HA/Frigate (API origin `http://10.0.1.154:8123`, the HA VM; Frigate consumes `rtsp://10.0.1.100:8554/...`). Added to the Pi 5 service inventory.
+- **Still DOWN with the Latitude (offline since ~2026-08-20):** Jellyfin, RomM, n8n, FreshRSS, Homepage, Dozzle. Immich is the only service migrated so far — the rest are blocked on powering the Latitude back on or finishing the migration. NETWORK.md "Future Improvements" updated accordingly.
+
+### 📡 Monitoring
+- **No NEW infra hosts this week (confirmed manually):** the ARP/MAC sweep surfaced 16 undocumented live hosts — **all consumer-class** (Apple, Amazon Fire/Echo, Microsoft/Xbox, Resideo thermostat, TP-Link Kasa/Tapo, random-MAC mobiles/printers). No `ALpha*`/server-like OUIs — nothing that warrants a HARDWARE.md entry.
+- **OPNsense SSH lease fetch still failing — 4th consecutive week** (port 22 times out; the daemon appears stopped). Web UI (`https://10.0.1.1`) remains the workaround; the weekly script keeps falling back to the ARP sweep.
+- **"Known infra host MISSING from LAN" fired correctly** for `10.0.1.176` (Latitude) — expected, offline since 2026-08-20 and already documented as such (not a new outage).
+- Zigbee still **8** devices, HA ✅, *arr containers UP (movie/series counts still `?` — Sonarr/Radarr API keys still stale/401).
+
+---
+
 ## 2026-09-06 — Latitude (alphamobile-1) OFFLINE Since Aug 20, Heavy Services Down; Monitoring Blind Spot #3 Fixed
 
 ### 🔧 Infrastructure

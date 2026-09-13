@@ -24,7 +24,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **Immich** | `http://10.0.1.176:2283` | Google Photos alternative, ML-powered |
+| **Immich** | `http://10.0.1.100:2283` | Google Photos alternative, ML-powered — **on the Pi 5 again since 2026-09-08** |
 
 ---
 
@@ -43,6 +43,7 @@ A categorized index of every service running in the Alpha Network homelab.
 | **Home Assistant** | `http://10.0.1.154:8123` | Smart home hub |
 | **Eufy Security** | Via HA | 5 security cameras, doorbell |
 | **Zigbee2MQTT** | `http://10.0.1.100:8080` | Zigbee coordinator (8 devices) |
+| **go2rtc** | `rtsp://10.0.1.100:8554` | RTSP restreamer (camera streams → HA + Frigate) |
 | **Mosquitto MQTT** | `10.0.1.100:1883` | MQTT broker, HA bridge |
 | **Gosund Bulbs** | *needs re-add* | Tuya smart bulbs (lost in rollback) |
 | **TP-Link KL130** | *needs re-add* | RGB bulb (lost in rollback) |
@@ -113,7 +114,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | What | Where |
 |------|-------|
-| **Docker hosts** | `ssh alpha@10.0.1.100` (Pi 5) · `ssh alpha@10.0.1.176` (Latitude) |
+| **Docker hosts** | `ssh alpha@10.0.1.100` (Pi 5) · `ssh alpha@10.0.1.176` (Latitude — 🔴 OFFLINE since 2026-08-20) |
 | **Proxmox** | `ssh root@10.0.1.108` |
 | **HA CLI** | `ssh root@10.0.1.108` → `qm terminal 100` |
 | **All services** | [Uptime Kuma](http://10.0.1.100:3001) |

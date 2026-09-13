@@ -4,10 +4,12 @@
 
 - **Description:** Open-source Google Photos alternative for self-hosted photo and video management.
 - **URL:** [http://10.0.1.100:2283](http://10.0.1.100:2283)
+- **Host:** alphapi5 (Pi 5) — **runs here again since 2026-09-08** (migrated back from the offline Latitude, `.176`). 4 containers: `immich_server`, `immich_machine_learning`, `immich_postgres`, `immich_redis` (all healthy).
+- **Data Paths:** Library `/mnt/nas-data/immich/library` (`UPLOAD_LOCATION`) · DB `/mnt/nas-data/immich/postgres`. A read-only external library `vault` (`/mnt/nas-data/vault`) is mounted into the server at `/vault:ro`.
 - **Backend Components:**
   - **PostgreSQL** — Primary database for metadata and application state.
   - **Redis** — Caching and job queue for background tasks.
-- **Storage:** Stores uploaded photos and videos on local/mounted storage.
+- **Storage:** Uploads in `/mnt/nas-data/immich/library` on the NAS; a read-only family-archive external library is mounted from `/mnt/nas-data/vault`.
 - **Machine Learning Capabilities:**
   - Facial recognition (automatic person tagging).
   - Object detection and scene classification.

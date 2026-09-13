@@ -1,6 +1,6 @@
 # Dell Latitude 5501 — Heavy Lifter
 
-> **🔴 OFFLINE since ~2026-08-20 03:25 EDT** (verified 2026-09-06 — Uptime Kuma EHOSTUNREACH, Tailscale last seen 2026-08-20, no ARP reply). All services below are **DOWN** until this machine is powered back on or its workload is migrated to ALpha-Server. See [CHANGELOG.md](../CHANGELOG.md).
+> **🔴 OFFLINE since ~2026-08-20 03:25 EDT** (verified again 2026-09-13 — Uptime Kuma EHOSTUNREACH, Tailscale last seen 2026-08-20, no ARP reply). **Immich has been migrated back to the Pi 5 (2026-09-08) and is healthy**; Jellyfin, RomM, n8n, FreshRSS, Homepage and Dozzle are **still DOWN** until this machine is powered back on or its remaining workload is migrated. See [CHANGELOG.md](../CHANGELOG.md).
 
 ## Overview
 
@@ -46,22 +46,22 @@ The Latitude solved all of this in one shot:
 
 ## Services Running
 
-The Latitude hosts the heavyweight services that *need* x86 power — **currently OFFLINE, so none of these are running (as of 2026-09-06)**:
+The Latitude hosts the heavyweight services that *need* x86 power — **currently OFFLINE, so most of these are not running (as of 2026-09-13)**:
 
 | Service | Port | Purpose |
 |---|---|---|
-| **Jellyfin** | `:8096` | Media streaming & hardware-accelerated transcoding |
-| **Immich** | `:2283` | Google Photos alternative with ML tagging/faces |
-| **RomM** | `:3000` | Game ROM library manager |
-| **n8n** | `:5678` | Workflow automation engine |
-| **FreshRSS** | `:8082` | RSS feed reader |
-| **Homepage** | `:3001` | Custom service dashboard |
-| **Dozzle** | `:8888` | Docker log viewer |
+| **Jellyfin** | `:8096` | Media streaming & hardware-accelerated transcoding — ⬇️ down |
+| ~~**Immich**~~ | `:2283` | ⚠️ **Migrated back to the Pi 5 (`10.0.1.100:2283`) on 2026-09-08 — healthy again** |
+| **RomM** | `:3000` | Game ROM library manager — ⬇️ down |
+| **n8n** | `:5678` | Workflow automation engine — ⬇️ down |
+| **FreshRSS** | `:8082` | RSS feed reader — ⬇️ down |
+| **Homepage** | `:3001` | Custom service dashboard — ⬇️ down |
+| **Dozzle** | `:8888` | Docker log viewer — ⬇️ down |
 | **Watchtower** | — | Auto-update Docker containers |
 | **PostgreSQL** | — | Database backend for Immich & other services |
 | **Redis** | — | Caching layer for various services |
 
-The Pi 5 now handles only the lightweight orchestration layer — *arr stack, Zigbee, Pi-hole, RDTClient, Eufy bridge.
+The Pi 5 now handles the lightweight orchestration layer — *arr stack, Zigbee, Pi-hole, RDTClient, Eufy bridge — **and took Immich back (2026-09-08)**; the remaining heavy services are still blocked on this machine.
 
 ---
 

@@ -33,10 +33,10 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
    ├── ALphaMAIN .233 (NEW Aug 2026 — was .141; usually off)
    ├── ALpha-Server .135 (NEW Aug 2026 — Frigate NVR)
    ├── Pi-hole .253 (macvlan DNS)
-   └── Docker services (light — *arr, zigbee, MQTT)
+   └── Docker services (light — *arr, Immich, zigbee, MQTT)
 ```
 
-> **⚠️ 2026-09-06:** The Latitude (`.176`) has been **offline since ~2026-08-20 03:25 EDT** — Jellyfin/Immich/RomM/n8n/FreshRSS/Homepage/Dozzle are DOWN. ALpha-Server (`.135`) currently runs only Frigate.
+> **⚠️ 2026-09-13:** The Latitude (`.176`) is still **offline since ~2026-08-20 03:25 EDT** — Jellyfin/RomM/n8n/FreshRSS/Homepage/Dozzle are DOWN. **Immich has been migrated back to the Pi 5 (`.100:2283`) and is healthy again since 2026-09-08.** ALpha-Server (`.135`) still runs only Frigate.
 
 ---
 
@@ -47,8 +47,8 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | **OPNsense** | Dell OptiPlex | Router, DHCP server, stateful firewall |
 | **ALphaMAIN** | ASUS (model TBD) | Personal gaming PC — SSH-monitor only, no agents (added Aug 2026, IP .233) |
 | **ALpha-Server** | Custom AMD (Ryzen 5 3600, RX 580) | Frigate NVR / GPU box — Ubuntu 24.04 (added Aug 2026) |
-| **alphamobile-1** | Dell Latitude 5501 (i7-9850H) | Heavy lifter — transcoding, ML, DBs — 🔴 OFFLINE since 2026-08-20 |
-| **alphapi5** | Raspberry Pi 5 | Orchestration — *arr, Zigbee, DNS |
+| **alphamobile-1** | Dell Latitude 5501 (i7-9850H) | Heavy lifter — transcoding, ML, DBs — 🔴 OFFLINE since 2026-08-20 (Immich migrated back to Pi 5) |
+| **alphapi5** | Raspberry Pi 5 | Orchestration — *arr, Zigbee, DNS, **Immich (photos)** |
 | **alphapi3** | Raspberry Pi 3 | Secondary node (travel stick plans) |
 | **alphamox** | Mac Mini | Proxmox hypervisor, HA VM |
 | **TL-SG108E** | TP-Link 8-port | Managed Gigabit switch |
@@ -63,8 +63,8 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | OPNsense | `10.0.1.1` | Router, DHCP, firewall |
 | ALphaMAIN | `10.0.1.233` | **NEW Aug 2026** — main machine (ASUS); DHCP moved from `.141` (~Aug 20) |
 | ALpha-Server | `10.0.1.135` | **NEW Aug 2026** — Frigate NVR (Ryzen 5 3600, Ubuntu 24.04) |
-| alphamobile-1 | `10.0.1.176` | Latitude heavy lifter — Jellyfin, Immich, n8n — 🔴 OFFLINE since ~Aug 20 2026 (services down) |
-| alphapi5 | `10.0.1.100` | Orchestration — *arr, Zigbee, DNS, RDTClient |
+| alphamobile-1 | `10.0.1.176` | Latitude heavy lifter — 🔴 OFFLINE since ~Aug 20 2026 (services down; Immich migrated to Pi 5) |
+| alphapi5 | `10.0.1.100` | Orchestration — *arr, Zigbee, DNS, RDTClient, **Immich** |
 | alphapi3 | `10.0.1.158` | Secondary node (travel stick plans) |
 | HP Printer 1 | `10.0.1.103` | Office printer |
 | alphamox | `10.0.1.108` | Proxmox hypervisor |
@@ -238,8 +238,10 @@ The Raspberry Pi 5 (`10.0.1.100`) runs Docker with the following LAN services:
 | Sonarr / Radarr / Prowlarr / Bazarr | `http://10.0.1.100:8989/7878/9696/6767` | *arr media automation |
 | Zigbee2MQTT + Mosquitto | `10.0.1.100:8080/1883` | Zigbee bridge + MQTT |
 | RDTClient | `http://10.0.1.100:6500` | Real-Debrid download client |
+| Immich | `http://10.0.1.100:2283` | Photo library (returned from the Latitude 2026-09-08; + Postgres, Redis, ML containers) |
+| go2rtc | `rtsp://10.0.1.100:8554` | RTSP restreamer (Eufy/camera streams → HA + Frigate) |
 
-> **⚠️ 2026-09-06:** Jellyfin / RomM / Immich (previously listed here) actually run on the **Latitude (`.176`)** — which has been **offline since ~2026-08-20**. Those services are currently **DOWN** network-wide; only Frigate is live on ALpha-Server. See [HARDWARE.md](HARDWARE.md) for the full outage trail.
+> **⚠️ 2026-09-13:** **Immich now runs on the Pi 5 again** (`10.0.1.100:2283`, 4 healthy containers, migrated from the offline Latitude 2026-09-08 — library on the NAS at `/mnt/nas-data/immich`). Jellyfin / RomM / n8n / FreshRSS are **still DOWN** with the **Latitude (`.176`)**, which has been **offline since ~2026-08-20**. See [HARDWARE.md](HARDWARE.md) for the full outage trail.
 
 ---
 
@@ -282,4 +284,4 @@ The Raspberry Pi 5 (`10.0.1.100`) runs Docker with the following LAN services:
 - [ ] Replace flat switch with a **managed PoE switch** (e.g., TL-SG2008P) for VLAN trunking
 - [ ] Implement **automatic backup** of OPNsense config to alphapi5
 - [ ] Add a **fallback internet connection** (4G LTE failover via USB modem on OPNsense)
-- [ ] Decide Latitude fate: power it back on, or migrate Jellyfin/Immich/n8n/FreshRSS/RomM to ALpha-Server and retire it
+- [ ] Decide Latitude fate: power it back on, or migrate the remaining services (Jellyfin/n8n/FreshRSS/RomM) to the Pi 5 / ALpha-Server and retire it — **Immich already migrated back to the Pi 5 (2026-09-08)**

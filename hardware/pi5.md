@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Raspberry Pi 5 serves as the lightweight orchestrator for the homelab, running containerized services including media automation, network security (Pi-hole), home automation bridging, and Zigbee coordination. All services are managed via Docker Compose across both the Pi 5 and the Dell Latitude 5501 heavy lifter.
+The Raspberry Pi 5 serves as the lightweight orchestrator for the homelab, running containerized services including media automation, network security (Pi-hole), home automation bridging, Zigbee coordination **and (since 2026-09-08) the Immich photo stack**. Services are managed via Docker Compose — the Pi 5 now carries 19 containers on its own, with Frigate on ALpha-Server.
 
 ---
 
@@ -16,7 +16,7 @@ Originally the Pi 5 ran everything. In mid-2026, CPU/IO-heavy services (Jellyfin
 | **RAM pressure** — Immich ML + Jellyfin + *arr left only 3.5 GB free | 7.5 GB available on the Latitude |
 | **SD card writes** — database services wear out SD cards fast | NVMe SSD on the Latitude |
 
-The Pi 5 now handles **lightweight orchestration**: *arr stack, Zigbee coordinator, Pi-hole, RDTClient, Eufy bridge, FlareSolverr, Uptime Kuma, Ntfy, Watchtower. See [latitude.md](latitude.md) for the heavy lifter details.
+The Pi 5 now handles **lightweight orchestration**: *arr stack, Zigbee coordinator, Pi-hole, RDTClient, Eufy bridge, FlareSolverr, Uptime Kuma, Ntfy, Watchtower, go2rtc — **plus Immich again since 2026-09-08** (migrated back after the Latitude went offline). See [latitude.md](latitude.md) for the heavy lifter's history.
 
 ---
 
@@ -102,9 +102,9 @@ Default policies: incoming **deny**, outgoing **allow**.
 
 ## Running Services (Docker Containers)
 
-> **Since the migration**, Jellyfin, Immich, RomM, n8n, FreshRSS, Homepage, and Dozzle now run on the [Dell Latitude 5501](latitude.md). The Pi 5 handles the lightweight orchestration layer.
+> **Since the migration**, Jellyfin, RomM, n8n, FreshRSS, Homepage, and Dozzle ran on the [Dell Latitude 5501](latitude.md). The Pi 5 kept the lightweight orchestration layer.
 
-> **⚠️ 2026-09-06:** the Latitude has been **OFFLINE since ~2026-08-20**, so the migrated services (Jellyfin, Immich, RomM, n8n, FreshRSS, Homepage, Dozzle) are currently **DOWN**. See [latitude.md](latitude.md) / [CHANGELOG.md](../CHANGELOG.md).
+> **⚠️ 2026-09-13:** the Latitude has been **OFFLINE since ~2026-08-20**, so Jellyfin, RomM, n8n, FreshRSS, Homepage and Dozzle are **still DOWN**. **Immich, however, has been migrated BACK to the Pi 5** (2026-09-08) and is running healthy again — the four containers below are part of the Pi 5's 19-container fleet. See [latitude.md](latitude.md) / [CHANGELOG.md](../CHANGELOG.md).
 
 ### Media Automation (arr-suite)
 
@@ -130,6 +130,18 @@ Default policies: incoming **deny**, outgoing **allow**.
 | **eufy-security-ws** | Eufy camera → Home Assistant bridge (port 3002) |
 | **zigbee2mqtt** | Zigbee coordinator → MQTT bridge (port 8080) |
 | **mosquitto** | MQTT message broker |
+| **go2rtc** | RTSP restreamer — Eufy/camera streams to Home Assistant + Frigate (`rtsp://10.0.1.100:8554`, API origin = HA VM `10.0.1.154:8123`) |
+
+### Photos
+
+| Service | Purpose |
+|---|---|
+| **immich_server** | Immich photo/video library + web UI (`:2283`) — migrated back from the Latitude 2026-09-08 |
+| **immich_machine_learning** | Immich ML — facial recognition, object/scene detection |
+| **immich_postgres** | Immich PostgreSQL database (VectorChord/pgvecto.rs image) |
+| **immich_redis** | Cache / job queue (Valkey 9) |
+
+> Immich data lives on the NAS: library `UPLOAD_LOCATION=/mnt/nas-data/immich/library`, DB at `/mnt/nas-data/immich/postgres`. The family archive at `/mnt/nas-data/vault` is mounted **read-only** into `immich_server` as an external library (`/vault:ro`). Watchtower is opted out for Immich containers — upgrade manually (DB migrations).
 
 ### Monitoring
 
