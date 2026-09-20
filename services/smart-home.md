@@ -60,7 +60,7 @@ To add a new Zigbee device:
   - Side Door
   - Backyard
   - Doorbell
-- **HomeBase:** Model T8010 at `10.0.1.187`
+- **HomeBase:** Model T8010 at `10.0.1.88` (was `.187` — DHCP lease changed, verified 2026-09-20)
 - **Connection:** Cloud bridge via `eufy-security-ws` Docker container on the Pi 5 (port 3002). Handles 2FA and trusted device registration.
 
 ### Frigate NVR (ALpha-Server)

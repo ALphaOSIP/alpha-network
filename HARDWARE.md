@@ -191,7 +191,7 @@ OPNsense (Dell OptiPlex) — WAN
     │   ├── EAP 670 (WiFi 6 AP)
     │   ├── HP Printer (10.0.1.103)
     │   ├── HP Printer (10.0.1.116)
-    │   └── Eufy HomeBase 2 (10.0.1.187)
+    │   └── Eufy HomeBase 2 (10.0.1.88)
     │
     ├── VLAN 1 — Trusted (10.0.10.0/24)
     ├── VLAN 2 — Services (10.0.20.0/24)

@@ -4,6 +4,22 @@
 
 ---
 
+## 2026-09-20 — Two Documented Device IPs Corrected (Eufy HomeBase → `.88`, EAP 670 → `.216`); 5th Week Without DHCP Leases
+
+### 🔧 Infrastructure
+- **Eufy HomeBase 2 (T8010, MAC `90:bf:d9:34:bf:c2`) moved `10.0.1.187` → `10.0.1.88`** — identical fingerprint (dnsmasq-2.90 + RTSP `:554` + Eufy API `:9000`). Confirmed two independent ways: the ARP sweep now sees `90:bf:d9` at `.88`, and the `eufy-security-ws` bridging container logged `Connected to station T8010T15250917B0 on host 10.0.1.88 and port 21606` (2026-09-20 07:05). `.187` no longer answers ARP. Corrected in NETWORK.md (IP table + note), HARDWARE.md (topology), services/smart-home.md.
+- **EAP 670 WiFi 6 AP (MAC `98:ba:5f:5b:48:0a`) moved `10.0.1.157` → `10.0.1.216`** — same MAC, still serving the TP-Link HTTPD login page on `:80`/`:443` (still the SSID `Prince Network` AP). `.157` no longer answers ARP. Corrected in NETWORK.md (IP table, note, WiFi section), services/network-services.md, docs/services-overview.md.
+- **Root cause of both: ordinary DHCP churn — neither device has a static reservation** (with the lease fetch still broken we can't read OPNsense's `<staticmap>` list, but nothing else explains an unchanged MAC taking a new IP). `.88`/`.216` are today's leases; expect this to recur until the HomeBase and the AP get reservations.
+- **No new machines, no service changes:** Docker on the Pi 5 still **19 containers** (unchanged since the Sep 8 Immich return); Zigbee still **8 paired devices** (Aqara temp/humidity, 2× Third Reality motion, 4× Third Reality bulbs, eWeLink contact — read from z2m `bridge/health`); HA ✅; ALpha-Server still runs Frigate only. alphapi3 (`.158`), alphamox (`.108`), both printers (`.103`/`.116`) present.
+- **alphamobile-1 (Latitude, `10.0.1.176`) still offline — 31 days** now (since 2026-08-20). The "Known infra host MISSING from LAN" row fires correctly for it; its documented state (offline, Immich migrated back to the Pi 5) is accurate, so no doc change.
+
+### 📡 Monitoring
+- **No NEW infra hosts — manually confirmed (the row's "agent must confirm" case):** the OPNsense SSH lease fetch failed again, so the script fell back to the ARP sweep. All 18 undocumented live hosts were resolved by MAC/vendor/port fingerprint: 5× Amazon Fire/Echo (`08:57:fb`, `fc:49:2d`, `44:3d:54`, `a8:e6:21`, `a0:d0:dc`), 1× Apple (`98:9e:63`), Microsoft/Xbox (`1c:1a:df`), Resideo thermostat (`b8:2c:a0`), 4 randomized-MAC mobiles, 2 no-port IoT (`6c:ac:c2`, `00:33:7a`), a TP-Link Kasa plug (`78:20:51`, "SHIP 2.0" web UI), a second TP-Link plug (`d8:07:b6`, `:9999`) — **plus the two already-documented devices whose leases had moved** (EAP 670 at `.216`, HomeBase at `.88`) that this manual pass is how we caught. **All consumer/IoT: nothing to add to HARDWARE.md.**
+- **OPNsense SSH lease fetch failing for the 5th consecutive week** (port 22 times out; the router's SSH daemon still appears stopped). The ARP-sweep fallback is the standing workaround; the OPNsense web UI (`https://10.0.1.1`) remains the only way to read leases, and it is why device IP churn is only caught when the sweep happens to sample the new lease.
+- *arr movie/series counts still `?` (Sonarr/Radarr API keys stale — containers healthy; cosmetic, unchanged).
+
+---
+
 ## 2026-09-13 — Immich Migrated Back to the Pi 5 (4 Containers); Docker Fleet 15 → 19
 
 ### 🔧 Infrastructure

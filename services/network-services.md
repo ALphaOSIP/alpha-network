@@ -13,7 +13,7 @@
 - **Type:** WiFi 6 access point (TP-Link EAP 670)
 - **Purpose:** Main WiFi — SSID `Prince Network` (2.4/5 GHz)
 - **Management:** Standalone mode — Omada controller removed Aug 2026, EAP runs with cached config
-- **Address:** `10.0.1.157`
+- **Address:** `10.0.1.216` (was `.157` until ~Sep 2026)
 
 ## Tailscale
 

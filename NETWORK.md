@@ -71,11 +71,11 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | HP Printer 2 | `10.0.1.116` | Secondary printer |
 | LG TV | `10.0.1.138` | Smart TV (LG Innotek OUI — was .143) |
 | HA VM | `10.0.1.154` | Home Assistant |
-| Eufy HomeBase | `10.0.1.187` | Camera bridge |
+| Eufy HomeBase | `10.0.1.88` | Camera bridge (DHCP moved from `.187` — verified 2026-09-20) |
 | Pi-hole | `10.0.1.253` | DNS resolver (macvlan container on Pi 5) |
-| EAP 670 | `10.0.1.157` | WiFi access point |
+| EAP 670 | `10.0.1.216` | WiFi access point (DHCP moved from `.157` — verified 2026-09-20) |
 
-> **Note:** The EAP 670 now sits at `10.0.1.157` (verified Aug 2026).
+> **Note (2026-09-20):** Two documented devices picked up new DHCP leases this week — the EAP 670 (`.157` → `10.0.1.216`) and the Eufy HomeBase (`.187` → `10.0.1.88`). Neither is statically reserved on OPNsense, so re-check the ARP/lease table if a service can't reach them.
 
 ---
 
@@ -196,7 +196,7 @@ WireGuard is configured on OPNsense but is **not actively used**. Tailscale repl
 
 ## WiFi
 
-- **Access Point:** TP-Link EAP 670 (WiFi 6, 2.4/5 GHz) at `10.0.1.157`
+- **Access Point:** TP-Link EAP 670 (WiFi 6, 2.4/5 GHz) at `10.0.1.216` (was `.157` until ~Sep 2026)
 - **Power:** PoE (via included PoE injector or PoE switch — currently via injector)
 - **Management:** Standalone mode (Omada controller removed Aug 2026 — EAP runs autonomously with cached config)
 
