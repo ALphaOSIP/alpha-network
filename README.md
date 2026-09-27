@@ -23,13 +23,13 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 |--------|------|----------|----|
 | **ALphaMAIN** | Personal gaming PC (Windows) | ASUS (model TBD) | SSH-monitor only, no agents |
 | **ALpha-Server** | Frigate NVR / GPU box | Custom AMD (Ryzen 5 3600 + RX 580) | Ubuntu 24.04 |
-| **alphamobile-1 (Latitude)** | Heavy lifter server — 🔴 OFFLINE since 2026-08-20 | Dell Latitude 5501 (i7-9850H) | Ubuntu 24.04 |
+| **alphamobile-1 (Latitude)** | Heavy lifter server — ✅ back online 2026-09-24 | Dell Latitude 5501 (i7-9850H) | Ubuntu 24.04 |
 | **alphapi5** | Orchestration server | Raspberry Pi 5 (8GB) | Ubuntu 24.04 |
 | **alphamox** | Hypervisor | Mac Mini (Late 2014) | Proxmox VE 9.1 |
 | **alphapi3** | Secondary node / travel stick | Raspberry Pi 3 B+ | Ubuntu 24.04 |
 | **OPNsense** | Router/firewall | Dell OptiPlex | OPNsense |
 
-**20 Docker containers** (19 on Pi 5 + Frigate on ALpha-Server) | **4-node Tailscale mesh** | **Home Assistant** | **Zigbee + MQTT + *arr integration**
+**31 Docker containers** (19 on Pi 5 + 11 on the Latitude + Frigate on ALpha-Server) | **4-node Tailscale mesh** | **Home Assistant** | **Zigbee + MQTT + *arr integration**
 
 ---
 
@@ -38,7 +38,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | Category | Services |
 |----------|----------|
 | **🎬 Media** | Jellyfin, Sonarr, Radarr, Bazarr, Prowlarr, RDTClient, FlareSolverr |
-| **📸 Photos** | Immich (Google Photos alternative — moved back to the Pi 5, Sep 2026) |
+| **📸 Photos** | Immich (Google Photos alternative — now on the Pi 5 **and** the Latitude; two instances, Sep 2026) |
 | **🎮 ROMs** | RomM (game ROM manager) |
 | **🏠 Smart Home** | Home Assistant, Eufy cameras, LG TV, Zigbee sensors (Aqara, Third Reality, TRÅDFRI bulbs), MQTT, Alexa voice |
 | **🌐 Network** | Pi-hole (DNS), EAP 670 (WiFi AP, standalone — Omada removed), Tailscale (mesh VPN) |
@@ -48,7 +48,7 @@ This repo documents my home lab — what it runs, how it's wired, and why I buil
 | **🔔 Notifications** | Ntfy (push notifications) |
 | **🐳 Management** | Portainer (Docker UI) |
 
-> **⚠️ Status (2026-09-13):** **Immich has been migrated back to the Pi 5** (`.100:2283`) and is healthy again since 2026-09-08. The Latitude (`.176`) is still offline since ~Aug 20 2026, so **Jellyfin, RomM, n8n and FreshRSS remain DOWN**. The Pi 5 *arr stack, Pi-hole, Zigbee/MQTT, HA, Immich and Frigate (ALpha-Server) remain up. See [CHANGELOG.md](CHANGELOG.md).
+> **✅ Status (2026-09-27):** The **Latitude is back online** (`.134`, was `.176`) — its Ethernet link died ~2026-08-20 and returned 2026-09-24, but the machine was never powered off, so **Jellyfin, RomM, n8n, FreshRSS, Homepage, Dozzle and its Immich stack are all UP**. The Pi 5 meanwhile gained its **own** Immich stack on 2026-09-08 (photos were unreachable during the outage), so there are now **two Immich instances**. Pi 5 *arr stack, Pi-hole, Zigbee/MQTT, HA and Frigate (ALpha-Server) remain up. See [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -66,6 +66,7 @@ Internet
          ▼     ▼    ▼     ▼
     Latitude  Pi 5  Mac Mini  EAP 670
    (Heavy) (Orch.) (Proxmox)  (WiFi)
+   .134 ✅  .100   .108      .216
 
    ALphaMAIN (.233) — NEW Aug 2026 (was .141)
    ALpha-Server (.135) — NEW Aug 2026 (Frigate NVR)

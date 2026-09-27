@@ -1,6 +1,6 @@
 # 🖥️ Alpha-Network Hardware Inventory
 
-> Last updated: 2026-09-13
+> Last updated: 2026-09-27
 
 This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
@@ -12,8 +12,8 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 |--------|------|----|----|-----|-----|--------|
 | **ALphaMAIN** | Personal gaming PC | Windows | 10.0.1.233 | TBD | TBD | 🟡 Personal machine, SSH-monitor only — IP moved from .141 (Aug 2026) |
 | **ALpha-Server** | Frigate NVR / GPU box | Ubuntu 24.04 | 10.0.1.135 | Ryzen 5 3600 (6C/12T) | 16 GB | ✅ Online — new (Aug 2026) |
-| **alphamobile-1 (Latitude)** | Heavy lifter server | Ubuntu 24.04 LTS | 10.0.1.176 | i7-9850H (6C/12T) @ 4.6 GHz | ~7.5 GB | 🔴 OFFLINE since 2026-08-20 — services down (Immich since migrated to Pi 5) |
-| **alphapi5** | Orchestration + photo server | Ubuntu 24.04.1 LTS | 10.0.1.100 | 4× Cortex-A76 @ 2.4 GHz | 8 GB | ✅ Online — now also runs Immich |
+| **alphamobile-1 (Latitude)** | Heavy lifter server | Ubuntu 24.04 LTS | 10.0.1.134 | i7-9850H (6C/12T) @ 4.6 GHz | ~7.5 GB | ✅ Online — network link restored 2026-09-24 (new IP; was `.176`); all services up |
+| **alphapi5** | Orchestration + photo server | Ubuntu 24.04.1 LTS | 10.0.1.100 | 4× Cortex-A76 @ 2.4 GHz | 8 GB | ✅ Online — orchestration + a second Immich stack (added 2026-09-08) |
 | **alphamox** | Proxmox hypervisor | Proxmox VE 9.1.1 | 10.0.1.108 | i5-4260U (2C/4T) @ 1.4 GHz | 8 GB DDR3 | ✅ Online |
 | **OPNsense (Dell OptiPlex)** | Router / Firewall | OPNsense | 10.0.1.1 | — | — | ✅ Online |
 | **alphapi3** | Secondary node (travel stick plans) | Ubuntu 24.04 | 10.0.1.158 | 4× Cortex-A53 @ 1.4 GHz | 1 GB | ✅ Online (was .101, now .158) |
@@ -38,7 +38,7 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
 ### Role
 
-The Pi 5 is the always-on orchestration layer — *arr stack, Zigbee coordinator, Pi-hole (macvlan), RDTClient, Eufy bridge, FlareSolverr, Uptime Kuma, Ntfy, Portainer, Watchtower, go2rtc — **and, since 2026-09-08, the Immich photo stack** (`immich_server`/`_machine_learning`/`_postgres`/`_redis`, all healthy), which was migrated back off the offline Latitude. 19 Docker containers total. See [hardware/pi5.md](hardware/pi5.md).
+The Pi 5 is the always-on orchestration layer — *arr stack, Zigbee coordinator, Pi-hole (macvlan), RDTClient, Eufy bridge, FlareSolverr, Uptime Kuma, Ntfy, Portainer, Watchtower, go2rtc — **and, since 2026-09-08, its own Immich photo stack** (`immich_server`/`_machine_learning`/`_postgres`/`_redis`, all healthy), added while the Latitude's network link was down (the Latitude was never powered off and runs a *second* Immich — see below). 19 Docker containers total. See [hardware/pi5.md](hardware/pi5.md).
 
 ### Storage
 
@@ -128,22 +128,22 @@ The Pi 5 is the always-on orchestration layer — *arr stack, Zigbee coordinator
 | **Storage** | 238 GB NVMe SSD |
 | **OS** | Ubuntu 24.04 LTS |
 | **Hostname** | `alphamobile-1` |
-| **IP Address** | `10.0.1.176` (LAN) · `100.82.167.20` (Tailscale) |
-| **Status** | 🔴 **OFFLINE** — left the network ~2026-08-20 03:25 EDT, has not returned (24 days as of 2026-09-13) |
-| **Uptime** | Was up since migration (~May 2026); unreachable since 2026-08-20 |
+| **IP Address** | `10.0.1.134` (LAN, DHCP — was `.176`) · `100.82.167.20` (Tailscale) |
+| **Status** | ✅ **ONLINE** — network link lost ~2026-08-20, **restored 2026-09-24**; all services up (the machine was never powered off) |
+| **Uptime** | **~6.5 weeks** — booted 2026-08-12 09:49 UTC and up continuously ever since |
 | **Form Factor** | Repurposed laptop (lid closed, headless) |
 
 ### Role
 
 The Latitude is the **heavy lifter** — it runs CPU/IO-intensive services that the Pi 5's ARM architecture struggles with:
 
-> **⚠️ 2026-09-13: The Latitude is still OFFLINE** (not on the network since ~2026-08-20 03:25 EDT). Detection trail: Uptime Kuma went EHOSTUNREACH at 2026-08-20 03:25 (after being green Aug 5–19), Tailscale shows `alphamobile-1` offline, and every weekly ARP sweep gets no reply. **Status of its services:** **Immich was migrated to the Pi 5 on 2026-09-08 and is healthy again**; **Jellyfin, n8n, FreshRSS, RomM, Homepage, Dozzle remain DOWN.** Action: power the Latitude back on, or finish migrating its services (to the Pi 5 and/or ALpha-Server) and retire it.
+> **✅ 2026-09-27: The Latitude is back ONLINE at `10.0.1.134`.** The "outage" was a **link-layer failure, not a power-off**: `eno2` went down 2026-08-20 ~10:56 UTC (after flapping) and stayed down ~5 weeks, so the box ran headless and unreachable on both LAN and Tailscale while monitoring went red. The link came back **2026-09-24 10:30 UTC**, it picked up a **new DHCP lease (`.176` → `.134`)**, and Tailscale + SSH reconnected the same day. Because it never rebooted, **every service was running the whole time** — Jellyfin, RomM, n8n, FreshRSS, Homepage, Dozzle, Immich + Postgres/Redis, Watchtower (11 containers). See [CHANGELOG.md](CHANGELOG.md).
 
-- **Jellyfin** — hardware-accelerated video transcoding (Intel Quick Sync) — ⬇️ still down
-- ~~**Immich** — photo ML (facial recognition, object detection)~~ — **moved to the Pi 5 (`10.0.1.100:2283`) 2026-09-08, healthy**
+- **Jellyfin** — media streaming + hardware-accelerated transcoding (Intel Quick Sync) — ✅ up (`:8096`)
+- **Immich** — photo ML + Postgres + Redis — ✅ up (`:2283`) — ⚠️ **also now running on the Pi 5 since 2026-09-08** (added while the Latitude was unreachable); two instances exist, see the migration note below
 - **PostgreSQL + Redis** — database backend for services
-- **n8n** — workflow automation — ⬇️ still down
-- **FreshRSS, RomM, Homepage, Dozzle** — ⬇️ still down
+- **n8n** — workflow automation — ✅ up (`:5678`)
+- **FreshRSS** (`:8082`), **RomM** (`:3000`), **Homepage** (`:3001`), **Dozzle** (`:8888`) — ✅ all up
 
 ### Migration Story
 
@@ -155,7 +155,7 @@ Originally everything ran on the Pi 5. As the homelab grew, three bottlenecks be
 | **RAM pressure** | Immich ML + Jellyfin + *arr stack left only 3.5 GB free | 7.5 GB available, plenty of headroom |
 | **SD card writes** | Database services constantly write to disk — SD cards die fast | NVMe SSD, designed for sustained I/O |
 
-The migration moved the heavyweight services to the Latitude (accessed at `10.0.1.176`), leaving the Pi 5 to handle lightweight orchestration — *arr stack, Zigbee coordinator, Pi-hole, RDTClient, Eufy bridge. **Since the Latitude went offline (~Aug 20 2026), the Pi 5 has quietly taken work back: Immich returned to it on 2026-09-08** (4 healthy containers, data on the NAS at `/mnt/nas-data/immich`). Jellyfin, n8n, FreshRSS and RomM have not been migrated yet.
+The migration moved the heavyweight services to the Latitude (now accessed at `10.0.1.134`), leaving the Pi 5 to handle lightweight orchestration — *arr stack, Zigbee coordinator, Pi-hole, RDTClient, Eufy bridge. **When the Latitude's link dropped (~Aug 20 2026) it looked like a power-off, so the Pi 5 was given its own Immich stack on 2026-09-08** (4 containers, data on the NAS at `/mnt/nas-data/immich`) to keep photos available. **That assumption turned out to be wrong** — the Latitude was up the whole time and came back on 2026-09-24 with its own Immich still running, so **there are now two Immich instances** (Latitude `:2283` and Pi 5 `:2283`). Reconciling them (pick one, retire the other) is an open follow-up; Jellyfin, n8n, FreshRSS, RomM, Homepage and Dozzle never left the Latitude and are up again.
 
 ### Cross-Host Routing Note
 
@@ -184,7 +184,7 @@ OPNsense (Dell OptiPlex) — WAN
     ├── LAN (10.0.1.0/24)
     │   ├── ALphaMAIN (10.0.1.233) — NEW Aug 2026 (was .141)
     │   ├── ALpha-Server (10.0.1.135) — NEW Aug 2026 (Frigate NVR)
-    │   ├── alphamobile-1 (Latitude 5501 — 10.0.1.176) 🔴 OFFLINE since 2026-08-20
+    │   ├── alphamobile-1 (Latitude 5501 — 10.0.1.134) ✅ Online (link restored 2026-09-24; was .176)
     │   ├── alphapi5 (10.0.1.100)
     │   ├── alphamox (10.0.1.108)
     │   ├── alphapi3 (10.0.1.158)
@@ -290,7 +290,8 @@ OPNsense (Dell OptiPlex) — WAN
 ## ⚡ Power & Environment
 
 - All online nodes have been **up for 57+ days** (since last maintenance) — except ALpha-Server, which joined ~Aug 20 2026.
-- **alphamobile-1 (Latitude) has been OFFLINE since ~2026-08-20** — see its section above. **Immich has since been migrated back to the Pi 5 (2026-09-08, healthy);** Jellyfin, n8n, FreshRSS and RomM are still down with it.
+- **alphamobile-1 (Latitude) is back ONLINE** — its Ethernet link died ~2026-08-20 and returned 2026-09-24 (new IP `.134`); the box itself stayed powered on the whole time and all its services are running. See its section above.
+- The Pi 5 was given its own **Immich stack** on 2026-09-08 (while the Latitude was unreachable); the Latitude's Immich was never stopped, so **two Immich instances now exist** — reconcile.
 - alphapi5 idles at ~61 °C (under typical passive cooling).
 - alphapi3 is back online at `10.0.1.158` (was thought powered off — see status above).
 - No UPS currently documented.

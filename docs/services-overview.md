@@ -8,7 +8,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **Jellyfin** | `http://10.0.1.176:8096` | Media streaming (movies, TV, music) |
+| **Jellyfin** | `http://10.0.1.134:8096` | Media streaming (movies, TV, music) — on the Latitude (was `.176`) |
 | **Sonarr** | `http://10.0.1.100:8989` | TV show automation |
 | **Radarr** | `http://10.0.1.100:7878` | Movie automation |
 | **Bazarr** | `http://10.0.1.100:6767` | Subtitle management |
@@ -32,7 +32,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **RomM** | `http://10.0.1.176:3000` | Game ROM manager & library |
+| **RomM** | `http://10.0.1.134:3000` | Game ROM manager & library — on the Latitude (was `.176`) |
 
 ---
 
@@ -70,7 +70,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **n8n** | `http://10.0.1.176:5678` | Workflow automation |
+| **n8n** | `http://10.0.1.134:5678` | Workflow automation — on the Latitude (was `.176`) |
 | **Goodnight House** | Cron (Mac Mini) | 2am lights/TV shutdown |
 | **DeepSeek Monitor** | Cron (Pi 5) | Daily API balance check |
 | **Network Monitor** | Cron (Pi 5) | Service health checks |
@@ -95,7 +95,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **FreshRSS** | `http://10.0.1.176:8082` | RSS feed reader |
+| **FreshRSS** | `http://10.0.1.134:8082` | RSS feed reader — on the Latitude (was `.176`) |
 
 ---
 
@@ -114,7 +114,7 @@ A categorized index of every service running in the Alpha Network homelab.
 
 | What | Where |
 |------|-------|
-| **Docker hosts** | `ssh alpha@10.0.1.100` (Pi 5) · `ssh alpha@10.0.1.176` (Latitude — 🔴 OFFLINE since 2026-08-20) |
+| **Docker hosts** | `ssh alpha@10.0.1.100` (Pi 5) · `ssh alpha@10.0.1.134` (Latitude — ✅ back online 2026-09-24, was `.176`) |
 | **Proxmox** | `ssh root@10.0.1.108` |
 | **HA CLI** | `ssh root@10.0.1.108` → `qm terminal 100` |
 | **All services** | [Uptime Kuma](http://10.0.1.100:3001) |

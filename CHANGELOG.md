@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-09-27 — The Latitude Was Never Off: Link-Layer Outage, Back Online at `.134` (All Services Up); Monitoring Still Pointed at Dead `.176`
+
+### 🔧 Infrastructure
+- **MAJOR: alphamobile-1 (Dell Latitude 5501, MAC `34:48:ed:31:23:97`, Tailscale `100.82.167.20`) is ONLINE — and was never powered off.** The weekly report's "undocumented host" at **`10.0.1.134`** *is* the Latitude (same MAC; its Tailscale node is up). The machine's own kernel log tells the real story: it **booted 2026-08-12 09:49 UTC and has been up continuously ever since** — `eno2` flapped, then went **link-down 2026-08-20 ~10:56 UTC** and stayed down ~5 weeks, so the laptop ran headless and unreachable on both LAN **and** Tailscale while monitoring went red. The **link returned 2026-09-24 10:30 UTC**, it picked up a **new DHCP lease (`10.0.1.176` → `10.0.1.134`)** and SSH/Tailscale reconnected the same day (the daily connectivity check flipped ✅ on 2026-09-24, uptime "6 weeks, 1 day").
+- **Consequence: every "Latitude services are DOWN" claim was wrong — they were running the whole time, just unreachable.** Verified live at `.134`: **Jellyfin `:8096`, RomM `:3000`, n8n `:5678`, FreshRSS `:8082`, Homepage `:3001`, Dozzle `:8888`, Immich `:2283` (+ `immich_machine_learning`/`_postgres`/`_redis`), Watchtower — 11 containers, all "Up 6 weeks."**
+- **Two Immich instances now exist:** the Pi 5 was given its own Immich stack on 2026-09-08 — a reasonable move *at the time*, when the Latitude looked dead — but the Latitude's Immich was never stopped. **Reconcile (keep one, retire the other)** — added to NETWORK.md "Future Improvements."
+- Docs corrected across **HARDWARE.md, NETWORK.md, README.md, hardware/latitude.md, hardware/pi5.md, docs/services-overview.md, services/storage.md**: Latitude status 🔴 OFFLINE → ✅ ONLINE, LAN IP `.176` → **`.134`** (Tailscale IP unchanged), service URLs updated, and the ASCII topologies / IP tables / Tailscale table / switch-port list refreshed. **Docker fleet now 31 total** (19 Pi 5 + 11 Latitude + 1 Frigate) — README's stale "20 containers" corrected.
+
+### 📡 Monitoring
+- **Weekly-report "NEW infra hosts … agent must confirm" row resolved manually.** The OPNsense SSH lease fetch failed for the **6th consecutive week** (port 22 times out), so the ARP sweep ran instead. The **only** "new" host was `.134` — which is the **Latitude at a new lease** (existing documented machine), not a new one. Every *other* undocumented host is consumer/IoT and correctly ignored: `.159` AzureWave (wifi IoT), `.187` GSD Vietnam (IP camera — `:554`/`:443`/`:8081`), Amazon Fire/Echo ×4 (`08:57:fb`, `fc:49:2d`, `a8:e6:21`, `a0:d0:dc`), Microsoft/Xbox (`1c:1a:df`), Resideo thermostat (`b8:2c:a0`), TP-Link plugs (`78:20:51`, `d8:07:b6`), randomized-MAC mobiles (`52:4f:4a`, `8e:3c:f9`, `10:68:38`).
+- **Trap avoided:** last week (2026-09-20) the HomeBase/EAP re-leases were caught only because the sweep happened to sample them — this week the same class of event (a documented machine re-leasing) was caught again via the `.134` Dell MAC fingerprint. **The fix is DHCP reservations** (Latitude/EAP/HomeBase — none currently reserved).
+- **`weekly-doc-check.py` updated:** `KNOWN_HOSTS` and `ALWAYS_ON` now carry **`.134`** in place of **`.176`** (the Latitude is an always-on infra host; its old address was removed so a reappearance would be flagged as churn).
+- **⚠️ New monitoring gap (needs the Kuma UI — not changed from cron):** **Uptime Kuma's eight Latitude monitors** — Jellyfin, RomM, Immich, FreshRSS, n8n, Homepage, Dozzle, Watchtower, plus the `alphamobile (Latitude)` ping — **all still point at the dead `10.0.1.176`**, so they read red even though every service is up. **Repoint them to `10.0.1.134`.**
+- **Unchanged:** Pi 5 still **19** containers; Zigbee still **8** paired devices (z2m `bridge/health`, 0 leaves); HA ✅; *arr movie/series counts still `?` (Sonarr/Radarr API keys stale — cosmetic, containers healthy); ALpha-Server still runs only Frigate; no *other* new machines joined.
+- **Housekeeping:** `images/topology.svg` is stale (shows Jellyfin/Immich/RomM/n8n under the Pi 5, Pi 3 at `.101`/offline, and has no Latitude node) — not regenerated this run; the maintained ASCII topologies in HARDWARE.md/NETWORK.md/README.md were updated instead.
+
+---
+
 ## 2026-09-20 — Two Documented Device IPs Corrected (Eufy HomeBase → `.88`, EAP 670 → `.216`); 5th Week Without DHCP Leases
 
 ### 🔧 Infrastructure

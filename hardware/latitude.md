@@ -1,6 +1,6 @@
 # Dell Latitude 5501 — Heavy Lifter
 
-> **🔴 OFFLINE since ~2026-08-20 03:25 EDT** (verified again 2026-09-13 — Uptime Kuma EHOSTUNREACH, Tailscale last seen 2026-08-20, no ARP reply). **Immich has been migrated back to the Pi 5 (2026-09-08) and is healthy**; Jellyfin, RomM, n8n, FreshRSS, Homepage and Dozzle are **still DOWN** until this machine is powered back on or its remaining workload is migrated. See [CHANGELOG.md](../CHANGELOG.md).
+> **✅ ONLINE — network link restored 2026-09-24 at `10.0.1.134`** (was `.176`). The Aug 20–Sep 24 "outage" was a **link-layer failure, not a power-off** — `eno2` dropped 2026-08-20 ~10:56 UTC and the laptop ran headless/unreachable for ~5 weeks; it never rebooted (uptime ~6.5 weeks, boot 2026-08-12). On 2026-09-24 the link returned, it took a new DHCP lease (`.176` → `.134`) and Tailscale/SSH reconnected. **All services are up again** (Jellyfin, RomM, n8n, FreshRSS, Homepage, Dozzle, Immich stack, Watchtower — 11 containers). Note: the Pi 5 gained its own Immich stack on 2026-09-08 while this box was unreachable, so **two Immich instances now exist**. See [CHANGELOG.md](../CHANGELOG.md).
 
 ## Overview
 
@@ -21,7 +21,7 @@ Hostname: `alphamobile-1`
 | **RAM** | ~7.5 GB (of total capacity) |
 | **Storage** | 238 GB NVMe SSD |
 | **OS** | Ubuntu 24.04 LTS |
-| **Network** | Gigabit Ethernet (eth0) — `10.0.1.176` |
+| **Network** | Gigabit Ethernet (eno2) — `10.0.1.134` (DHCP; was `.176` until 2026-09-24) |
 | **Tailscale** | `100.82.167.20` |
 | **Form Factor** | Laptop chassis (lid closed, headless operation) |
 
@@ -46,28 +46,30 @@ The Latitude solved all of this in one shot:
 
 ## Services Running
 
-The Latitude hosts the heavyweight services that *need* x86 power — **currently OFFLINE, so most of these are not running (as of 2026-09-13)**:
+The Latitude hosts the heavyweight services that *need* x86 power — **all running again since the link came back on 2026-09-24 (11 containers, up continuously since the 2026-08-12 boot)**:
 
 | Service | Port | Purpose |
 |---|---|---|
-| **Jellyfin** | `:8096` | Media streaming & hardware-accelerated transcoding — ⬇️ down |
-| ~~**Immich**~~ | `:2283` | ⚠️ **Migrated back to the Pi 5 (`10.0.1.100:2283`) on 2026-09-08 — healthy again** |
-| **RomM** | `:3000` | Game ROM library manager — ⬇️ down |
-| **n8n** | `:5678` | Workflow automation engine — ⬇️ down |
-| **FreshRSS** | `:8082` | RSS feed reader — ⬇️ down |
-| **Homepage** | `:3001` | Custom service dashboard — ⬇️ down |
-| **Dozzle** | `:8888` | Docker log viewer — ⬇️ down |
-| **Watchtower** | — | Auto-update Docker containers |
-| **PostgreSQL** | — | Database backend for Immich & other services |
-| **Redis** | — | Caching layer for various services |
+| **Jellyfin** | `:8096` | Media streaming & hardware-accelerated transcoding — ✅ up |
+| **Immich** | `:2283` | Photo ML (facial recognition, object detection) + `immich_postgres` + `immich_redis` — ✅ up ⚠️ *a second, separate Immich stack also runs on the Pi 5 since 2026-09-08 — reconcile* |
+| **RomM** | `:3000` | Game ROM library manager — ✅ up (+ `romm-db`) |
+| **n8n** | `:5678` | Workflow automation engine — ✅ up |
+| **FreshRSS** | `:8082` | RSS feed reader — ✅ up |
+| **Homepage** | `:3001` | Custom service dashboard — ✅ up |
+| **Dozzle** | `:8888` | Docker log viewer — ✅ up |
+| **Watchtower** | — | Auto-update Docker containers — ✅ up |
+| **PostgreSQL** | — | Database backend for Immich & other services — ✅ up |
+| **Redis** | — | Caching layer for various services — ✅ up |
 
-The Pi 5 now handles the lightweight orchestration layer — *arr stack, Zigbee, Pi-hole, RDTClient, Eufy bridge — **and took Immich back (2026-09-08)**; the remaining heavy services are still blocked on this machine.
+The Pi 5 handles the lightweight orchestration layer — *arr stack, Zigbee, Pi-hole, RDTClient, Eufy bridge — **plus a second Immich stack it picked up on 2026-09-08** while the Latitude was unreachable. The Latitude's heavy services are all live again at `.134`.
+
+> **⚠️ Monitoring gap (2026-09-27):** Uptime Kuma's eight Latitude monitors (Jellyfin, RomM, Immich, FreshRSS, n8n, Homepage, Dozzle, Watchtower) plus the `alphamobile (Latitude)` ping still point at the **dead `10.0.1.176`** — they all read red even though the services are up. Repoint them to `10.0.1.134` (and ideally add DHCP reservations so this stops recurring).
 
 ---
 
 ## Network Note
 
-Due to a switch-level quirk, the Pi 5 (`10.0.1.100`) cannot directly reach the Latitude on the local subnet. All cross-host communication routes through Tailscale instead — the Latitude is accessed at `100.82.167.20` from the Pi 5 side. This doesn't affect normal operation (all Docker services bind to their ports), but any host-to-host scripts or monitoring use the Tailscale IP.
+Due to a switch-level quirk, the Pi 5 (`10.0.1.100`) historically could not directly reach the Latitude on the local subnet. All cross-host communication routes through Tailscale instead — the Latitude is accessed at `100.82.167.20` from the Pi 5 side. This doesn't affect normal operation (all Docker services bind to their ports), but any host-to-host scripts or monitoring use the Tailscale IP. (After the 2026-09-24 re-lease the Pi's ARP table does now see `10.0.1.134` on `eth0`, but Tailscale remains the documented path.)
 
 ---
 
@@ -75,7 +77,7 @@ Due to a switch-level quirk, the Pi 5 (`10.0.1.100`) cannot directly reach the L
 
 | Command | Purpose |
 |---|---|
-| `ssh alpha@100.82.167.20` | SSH via Tailscale (preferred) |
-| `ssh alpha@10.0.1.176` | SSH over LAN (only works from same switch port) |
+| `ssh alpha@100.82.167.20` | SSH via Tailscale (preferred; key `id_hermes`) |
+| `ssh alpha@10.0.1.134` | SSH over LAN (current lease; was `.176` before 2026-09-24) |
 | `docker compose up -d` | Start/update a service |
 | `tailscale ping 100.82.167.20` | Test connectivity from Pi 5 |

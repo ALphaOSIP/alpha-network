@@ -27,16 +27,16 @@ The **alpha-network** is a homelab network operating on the `10.0.1.0/24` subnet
      /     │   │    │     \
     │      │   │    │      │
 Latitude Pi 5 Mac Mini EAP 670  Pi 3
- .176   .100  .108   .157  .158
- 🔴OFF
-   (offline since 2026-08-20)
+ .134   .100  .108   .216  .158
+  ✅
+   (link restored 2026-09-24; was .176)
    ├── ALphaMAIN .233 (NEW Aug 2026 — was .141; usually off)
    ├── ALpha-Server .135 (NEW Aug 2026 — Frigate NVR)
    ├── Pi-hole .253 (macvlan DNS)
    └── Docker services (light — *arr, Immich, zigbee, MQTT)
 ```
 
-> **⚠️ 2026-09-13:** The Latitude (`.176`) is still **offline since ~2026-08-20 03:25 EDT** — Jellyfin/RomM/n8n/FreshRSS/Homepage/Dozzle are DOWN. **Immich has been migrated back to the Pi 5 (`.100:2283`) and is healthy again since 2026-09-08.** ALpha-Server (`.135`) still runs only Frigate.
+> **✅ 2026-09-27:** The Latitude (now `.134`) is **back online** — its Ethernet link died ~2026-08-20 and returned **2026-09-24**; the machine never powered off, so Jellyfin/RomM/n8n/FreshRSS/Homepage/Dozzle **and its Immich stack are all UP**. A **second Immich stack** was added on the Pi 5 (`.100:2283`) on 2026-09-08 while the Latitude was unreachable — two instances now exist. ALpha-Server (`.135`) still runs only Frigate.
 
 ---
 
@@ -47,8 +47,8 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | **OPNsense** | Dell OptiPlex | Router, DHCP server, stateful firewall |
 | **ALphaMAIN** | ASUS (model TBD) | Personal gaming PC — SSH-monitor only, no agents (added Aug 2026, IP .233) |
 | **ALpha-Server** | Custom AMD (Ryzen 5 3600, RX 580) | Frigate NVR / GPU box — Ubuntu 24.04 (added Aug 2026) |
-| **alphamobile-1** | Dell Latitude 5501 (i7-9850H) | Heavy lifter — transcoding, ML, DBs — 🔴 OFFLINE since 2026-08-20 (Immich migrated back to Pi 5) |
-| **alphapi5** | Raspberry Pi 5 | Orchestration — *arr, Zigbee, DNS, **Immich (photos)** |
+| **alphamobile-1** | Dell Latitude 5501 (i7-9850H) | Heavy lifter — transcoding, ML, DBs — ✅ Online (link restored 2026-09-24; IP now `.134`) |
+| **alphapi5** | Raspberry Pi 5 | Orchestration — *arr, Zigbee, DNS, **Immich (2nd instance since 2026-09-08)** |
 | **alphapi3** | Raspberry Pi 3 | Secondary node (travel stick plans) |
 | **alphamox** | Mac Mini | Proxmox hypervisor, HA VM |
 | **TL-SG108E** | TP-Link 8-port | Managed Gigabit switch |
@@ -63,7 +63,7 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | OPNsense | `10.0.1.1` | Router, DHCP, firewall |
 | ALphaMAIN | `10.0.1.233` | **NEW Aug 2026** — main machine (ASUS); DHCP moved from `.141` (~Aug 20) |
 | ALpha-Server | `10.0.1.135` | **NEW Aug 2026** — Frigate NVR (Ryzen 5 3600, Ubuntu 24.04) |
-| alphamobile-1 | `10.0.1.176` | Latitude heavy lifter — 🔴 OFFLINE since ~Aug 20 2026 (services down; Immich migrated to Pi 5) |
+| alphamobile-1 | `10.0.1.134` | Latitude heavy lifter — ✅ Online; DHCP re-lease `.176` → `.134` on 2026-09-24 (services up) |
 | alphapi5 | `10.0.1.100` | Orchestration — *arr, Zigbee, DNS, RDTClient, **Immich** |
 | alphapi3 | `10.0.1.158` | Secondary node (travel stick plans) |
 | HP Printer 1 | `10.0.1.103` | Office printer |
@@ -76,6 +76,8 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | EAP 670 | `10.0.1.216` | WiFi access point (DHCP moved from `.157` — verified 2026-09-20) |
 
 > **Note (2026-09-20):** Two documented devices picked up new DHCP leases this week — the EAP 670 (`.157` → `10.0.1.216`) and the Eufy HomeBase (`.187` → `10.0.1.88`). Neither is statically reserved on OPNsense, so re-check the ARP/lease table if a service can't reach them.
+>
+> **Note (2026-09-27):** The **Latitude (alphamobile-1)** also re-leased — `.176` → **`10.0.1.134`** — when its Ethernet link came back on 2026-09-24 after ~5 weeks down (the old `.176` address is now vacant). Same root cause: **no DHCP reservation**. Adding reservations for the Latitude, EAP and HomeBase would end this recurring IP churn.
 
 ---
 
@@ -175,7 +177,7 @@ Tailscale is the primary remote access method — a WireGuard-based mesh VPN wit
 | alphapi5 | alphapi5 | `100.101.94.73` |
 | alphamox | alphamox | `100.124.155.110` |
 | ALpha-Server | alpha-server | `100.123.100.38` |
-| alphamobile-1 | alphamobile-1 | `100.82.167.20` — 🔴 offline, last seen 2026-08-20 |
+| alphamobile-1 | alphamobile-1 | `100.82.167.20` — ✅ online (rejoined 2026-09-24) |
 | iPhone | — | `100.89.238.113` |
 
 **Subnet routing:** The Mac Mini (alphamox) is configured as a **subnet router** for `10.0.1.0/24`. This allows remote devices (e.g., iPhone) to reach LAN-only services like Home Assistant (`10.0.1.154:8123`) without exposing them to the internet.
@@ -220,7 +222,7 @@ WireGuard is configured on OPNsense but is **not actively used**. Tailscale repl
   - Port 2: alphapi5
   - Port 3: alphamox (Proxmox)
   - Port 4: EAP 670 (PoE injector)
-  - Port 5: alphapi3 (offline)
+  - Port 5: alphapi3 (now online at `.158`)
   - Port 6–8: Open / future expansion
 
 The "Easy Smart" features of this switch are unused; it functions purely as an unmanaged gigabit switch.
@@ -241,7 +243,7 @@ The Raspberry Pi 5 (`10.0.1.100`) runs Docker with the following LAN services:
 | Immich | `http://10.0.1.100:2283` | Photo library (returned from the Latitude 2026-09-08; + Postgres, Redis, ML containers) |
 | go2rtc | `rtsp://10.0.1.100:8554` | RTSP restreamer (Eufy/camera streams → HA + Frigate) |
 
-> **⚠️ 2026-09-13:** **Immich now runs on the Pi 5 again** (`10.0.1.100:2283`, 4 healthy containers, migrated from the offline Latitude 2026-09-08 — library on the NAS at `/mnt/nas-data/immich`). Jellyfin / RomM / n8n / FreshRSS are **still DOWN** with the **Latitude (`.176`)**, which has been **offline since ~2026-08-20**. See [HARDWARE.md](HARDWARE.md) for the full outage trail.
+> **✅ 2026-09-27:** The **Latitude is back online at `10.0.1.134`** (link restored 2026-09-24) — **Jellyfin (`:8096`), RomM (`:3000`), n8n (`:5678`), FreshRSS (`:8082`), Homepage (`:3001`), Dozzle (`:8888`) and its own Immich (`:2283`) are all UP again**. Note the **Pi 5 gained its own separate Immich stack on 2026-09-08** while the Latitude was unreachable, so **two Immich instances now exist** (`.100:2283` and `.134:2283`) — reconcile. Also: Uptime Kuma's Latitude monitors still point at the dead `.176` and need repointing to `.134`. See [HARDWARE.md](HARDWARE.md).
 
 ---
 
@@ -284,4 +286,4 @@ The Raspberry Pi 5 (`10.0.1.100`) runs Docker with the following LAN services:
 - [ ] Replace flat switch with a **managed PoE switch** (e.g., TL-SG2008P) for VLAN trunking
 - [ ] Implement **automatic backup** of OPNsense config to alphapi5
 - [ ] Add a **fallback internet connection** (4G LTE failover via USB modem on OPNsense)
-- [ ] Decide Latitude fate: power it back on, or migrate the remaining services (Jellyfin/n8n/FreshRSS/RomM) to the Pi 5 / ALpha-Server and retire it — **Immich already migrated back to the Pi 5 (2026-09-08)**
+- [ ] Decide Latitude fate: it is **back online (2026-09-24)** at `.134` with all services up — so now the open item is to **reconcile the two Immich instances** (Pi 5 `.100:2283` and Latitude `.134:2283`) and decide whether to retire one, plus add **DHCP reservations** (Latitude/EAP/HomeBase) to stop the recurring IP churn.

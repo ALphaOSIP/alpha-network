@@ -4,7 +4,7 @@
 
 - **Description:** Open-source Google Photos alternative for self-hosted photo and video management.
 - **URL:** [http://10.0.1.100:2283](http://10.0.1.100:2283)
-- **Host:** alphapi5 (Pi 5) — **runs here again since 2026-09-08** (migrated back from the offline Latitude, `.176`). 4 containers: `immich_server`, `immich_machine_learning`, `immich_postgres`, `immich_redis` (all healthy).
+- **Host:** alphapi5 (Pi 5, `10.0.1.100:2283`) — **a second Immich stack added here 2026-09-08** (while the Latitude was unreachable). 4 containers: `immich_server`, `immich_machine_learning`, `immich_postgres`, `immich_redis` (all healthy). ⚠️ The **Latitude also still runs its own Immich** (`10.0.1.134:2283`) — it was never actually powered off (link-only outage, restored 2026-09-24), so **two instances exist** and need reconciling.
 - **Data Paths:** Library `/mnt/nas-data/immich/library` (`UPLOAD_LOCATION`) · DB `/mnt/nas-data/immich/postgres`. A read-only external library `vault` (`/mnt/nas-data/vault`) is mounted into the server at `/vault:ro`.
 - **Backend Components:**
   - **PostgreSQL** — Primary database for metadata and application state.

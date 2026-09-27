@@ -16,7 +16,7 @@ Originally the Pi 5 ran everything. In mid-2026, CPU/IO-heavy services (Jellyfin
 | **RAM pressure** — Immich ML + Jellyfin + *arr left only 3.5 GB free | 7.5 GB available on the Latitude |
 | **SD card writes** — database services wear out SD cards fast | NVMe SSD on the Latitude |
 
-The Pi 5 now handles **lightweight orchestration**: *arr stack, Zigbee coordinator, Pi-hole, RDTClient, Eufy bridge, FlareSolverr, Uptime Kuma, Ntfy, Watchtower, go2rtc — **plus Immich again since 2026-09-08** (migrated back after the Latitude went offline). See [latitude.md](latitude.md) for the heavy lifter's history.
+The Pi 5 handles **lightweight orchestration**: *arr stack, Zigbee coordinator, Pi-hole, RDTClient, Eufy bridge, FlareSolverr, Uptime Kuma, Ntfy, Watchtower, go2rtc — **plus a second Immich stack added 2026-09-08** (photos were unreachable while the Latitude's network link was down; the Latitude was never actually powered off and came back 2026-09-24 with its *own* Immich still running, so there are now two instances). See [latitude.md](latitude.md) for the heavy lifter's history.
 
 ---
 
@@ -102,9 +102,9 @@ Default policies: incoming **deny**, outgoing **allow**.
 
 ## Running Services (Docker Containers)
 
-> **Since the migration**, Jellyfin, RomM, n8n, FreshRSS, Homepage, and Dozzle ran on the [Dell Latitude 5501](latitude.md). The Pi 5 kept the lightweight orchestration layer.
+> **Since the migration**, Jellyfin, RomM, n8n, FreshRSS, Homepage, and Dozzle run on the [Dell Latitude 5501](latitude.md). The Pi 5 keeps the lightweight orchestration layer.
 
-> **⚠️ 2026-09-13:** the Latitude has been **OFFLINE since ~2026-08-20**, so Jellyfin, RomM, n8n, FreshRSS, Homepage and Dozzle are **still DOWN**. **Immich, however, has been migrated BACK to the Pi 5** (2026-09-08) and is running healthy again — the four containers below are part of the Pi 5's 19-container fleet. See [latitude.md](latitude.md) / [CHANGELOG.md](../CHANGELOG.md).
+> **✅ 2026-09-27:** the Latitude is **back online** at `10.0.1.134` (its Ethernet link died ~2026-08-20 and returned 2026-09-24 — it never powered off), so those services are **UP again**. The Pi 5's own **Immich stack — added 2026-09-08** while the Latitude was unreachable — is still running as a **second instance**; the four containers below are part of the Pi 5's 19-container fleet. See [latitude.md](latitude.md) / [CHANGELOG.md](../CHANGELOG.md).
 
 ### Media Automation (arr-suite)
 
