@@ -68,7 +68,7 @@ Internet
    (Heavy) (Orch.) (Proxmox)  (WiFi)
    .134 ✅  .100   .108      .216
 
-   ALphaMAIN (.233) — NEW Aug 2026 (was .141)
+   ALphaMAIN (.234) — NEW Aug 2026 (was .141 → .233 → .234)
    ALpha-Server (.135) — NEW Aug 2026 (Frigate NVR)
    VLANs on OPNsense: Trusted/Services/IoT/Guest
 ```

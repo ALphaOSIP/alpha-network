@@ -10,7 +10,7 @@ This document catalogs all hardware in the Alpha homelab network (10.0.1.0/24).
 
 | Device | Role | OS | IP | CPU | RAM | Status |
 |--------|------|----|----|-----|-----|--------|
-| **ALphaMAIN** | Personal gaming PC | Windows | 10.0.1.233 | TBD | TBD | 🟡 Personal machine, SSH-monitor only — IP moved from .141 (Aug 2026) |
+| **ALphaMAIN** | Personal gaming PC | Windows | 10.0.1.234 | TBD | TBD | 🟡 Personal machine, SSH-monitor only — IP moved .141 → .233 → **.234** (Nov 2026) |
 | **ALpha-Server** | Frigate NVR / GPU box | Ubuntu 24.04 | 10.0.1.135 | Ryzen 5 3600 (6C/12T) | 16 GB | ✅ Online — new (Aug 2026) |
 | **alphamobile-1 (Latitude)** | Heavy lifter server | Ubuntu 24.04 LTS | 10.0.1.134 | i7-9850H (6C/12T) @ 4.6 GHz | ~7.5 GB | ✅ Online — network link restored 2026-09-24 (new IP; was `.176`); all services up |
 | **alphapi5** | Orchestration + photo server | Ubuntu 24.04.1 LTS | 10.0.1.100 | 4× Cortex-A76 @ 2.4 GHz | 8 GB | ✅ Online — orchestration + a second Immich stack (added 2026-09-08) |
@@ -55,14 +55,14 @@ The Pi 5 is the always-on orchestration layer — *arr stack, Zigbee coordinator
 |------|--------|
 | **Vendor** | ASUSTek Computer Inc. (OUI `30:C5:99`) |
 | **MAC Address** | `30:c5:99:ef:5c:b4` |
-| **IP Address** | `10.0.1.233` (DHCP — was `10.0.1.141`; lease moved ~Aug 20 2026, verified via ARP Aug 23) |
+| **IP Address** | `10.0.1.234` (DHCP — `.141` → `.233` ~Aug 20 2026 → **`.234`**, MAC-verified 2026-11-01) |
 | **First Seen** | ~Aug 9 2026 (DHCP lease renewed Aug 9 ~08:00 EDT) |
 | **OS** | Windows |
 | **Status** | 🟡 Personal machine — usually off; SSH-monitor only |
 | **Policy** | **NO agents, NO services, NO Hermes installs.** Joseph's personal gaming PC. SSH key access (`id_alphamain` on alphapi5) for connectivity checks + on-request help only. |
 | **Wake-on-LAN** | Planned (Joseph to enable in BIOS + Windows). Pi has `wakeonlan` ready — magic packet to `30:c5:99:ef:5c:b4`. LAN-only, no WAN forward (security note). |
 
-> **Added 2026-08-09** — was invisible to all monitoring (checks only probed hardcoded hosts). Tracked in [CHANGELOG.md](CHANGELOG.md). **IP moved to .233 Aug 2026** — docs updated 2026-08-23.
+> **Added 2026-08-09** — was invisible to all monitoring (checks only probed hardcoded hosts). Tracked in [CHANGELOG.md](CHANGELOG.md). **IP moved `.141` → `.233` Aug 2026** (docs updated 2026-08-23), then **`.233` → `.234`** — found 2026-11-01 when the weekly ARP sweep saw MAC `30:c5:99:ef:5c:b4` on `.234` while `.233` no longer answers ARP (OPNsense web-UI change records also show admin activity from `10.0.1.234` on 2026-10-20). **No DHCP reservation exists**, so expect this to recur.
 
 ---
 
@@ -182,7 +182,7 @@ ISP ONT (Fiber modem)
 OPNsense (Dell OptiPlex) — WAN
     │
     ├── LAN (10.0.1.0/24)
-    │   ├── ALphaMAIN (10.0.1.233) — NEW Aug 2026 (was .141)
+    │   ├── ALphaMAIN (10.0.1.234) — NEW Aug 2026 (was .141 → .233 → .234)
     │   ├── ALpha-Server (10.0.1.135) — NEW Aug 2026 (Frigate NVR)
     │   ├── alphamobile-1 (Latitude 5501 — 10.0.1.134) ✅ Online (link restored 2026-09-24; was .176)
     │   ├── alphapi5 (10.0.1.100)

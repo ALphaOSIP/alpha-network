@@ -4,6 +4,25 @@
 
 ---
 
+## 2026-11-01 — ALphaMAIN Re-leased `.233` → `.234` (Found by MAC, Missed by the Check); Config Backup Proves There Are **No DHCP Reservations**
+
+### 🔧 Infrastructure
+- **ALphaMAIN (ASUS gaming PC, MAC `30:c5:99:ef:5c:b4`) moved off `.233` to `10.0.1.234`.** Verified by MAC: the weekly ARP sweep lists `10.0.1.234 / 30:C5:99:EF:5C:B4` while `.233` is `FAILED` in the local ARP table (no reply, address vacant). This is the **4th documented-device re-lease since August** (Latitude `.176`→`.134`, HomeBase `.187`→`.88`, EAP `.157`→`.216`, now ALphaMAIN `.233`→`.234`).
+- **How long has it been wrong?** The OPNsense config backups dated **2026-10-20** record `root@10.0.1.234` as the client that edited the Xbox NAT rules (`firewall_nat_edit.php`, epoch `1792446055`) — i.e. Joseph was already on `.234` four+ days before this run, presumably on ALphaMAIN. The daily connectivity check has been pinging the dead `.233` all along (see Monitoring).
+- **Identity note:** `.234` answers ARP but **every TCP port probed (22/80/443/445/135/3389/5900) is filtered** — Windows firewall + possibly modern-standby, so SSH cannot re-confirm the hostname. Identity rests on the **MAC, which matches ALphaMAIN's documented NIC exactly**; that is conclusive. Do not read "all ports closed" as "machine absent".
+- **Root cause finally proven — the docs' reservation claim was false.** A full OPNsense config backup (`/home/alpha/backups/opnsense/opnsense-config-20261020-0624-prexboxnat.xml`) shows the DHCP server is **Dnsmasq v1.0.8** with range **`10.0.1.41`–`10.0.1.245`** and exactly **one** static host entry: `XBOX` → `10.0.1.170` (`1c:1a:df:62:ee:bc`). **No reservation exists for ALphaMAIN, the Latitude, the EAP 670, the HomeBase or any server.** NETWORK.md previously asserted "all static IPs above are configured as DHCP reservations by MAC address" — corrected, along with the scope (old docs said `.50`–`.254`).
+- **Docs updated:** ALphaMAIN `.233` → **`.234`** in HARDWARE.md (summary table, spec block, ASCII topology), NETWORK.md (topology, role table, IP table, new 2026-11-01 note, DHCP section rewritten), README.md topology, hardware/mac-mini.md. The backup location is now documented as the way to read OPNsense config without SSH.
+- **No new machines:** the 18 undocumented ARP hosts are all consumer/IoT and correctly ignored — 5× Amazon (`08:57:fb`, `fc:49:2d`, `44:3d:54`, `a8:e6:21`, `a0:d0:dc`), Apple (`98:9e:63`, `04:e4:b6`), Microsoft/Xbox (`1c:1a:df` — the dnsmasq `XBOX` entry), Resideo thermostat (`b8:2c:a0`), TP-Link (`78:20:51`, `d8:07:b6`), Motorola (`04:34:f6`), randomized-MAC mobiles (`b2:7c:69`, `52:4f:4a`), no-port IoT (`6c:ac:c2`, `00:33:7a`, `44:0f:b4`). The only infra MAC in the list is ALphaMAIN's.
+- **Unchanged:** Pi 5 Docker fleet still **19** containers; Zigbee **8** paired devices; HA ✅; *arr movie/series counts still `?` (stale API keys, containers healthy); ALpha-Server still Frigate-only; Latitude still up at `.134`.
+
+### 📡 Monitoring
+- **The weekly row said "none detected by ARP MAC review — agent must confirm"; confirmation reversed it.** This is the **third false-negative of this class** (Aug 23: ALpha-Server + ALphaMAIN move; Sep 27: Latitude; today: ALphaMAIN) — an ARP sweep that lists "all undocumented hosts" but is only skimmed for *new* MACs hides a *known* MAC landing on a *new IP*.
+- **Blind spot #4 — the daily check has never once succeeded on ALphaMAIN and nobody noticed.** All **85** `device-check` logs from 2026-08-09 to 2026-11-01 show `❌ ALphaMAIN unreachable` — 14 on `.141`, 71 on `.233` — explained away each time as "usually off / Windows blocks ICMP". The machine simply wasn't at that address; a probe that is *expected* to fail can never detect a wrong IP. Ping is also the wrong probe for a host that blocks ICMP: **check ARP/MAC instead.**
+- **Monitoring scripts updated:** `weekly-doc-check.py` `KNOWN_HOSTS` now carries `.234` (was `.233`; `.233` deliberately dropped so a reappearance is flagged) and gains a **`DOCUMENTED_MACS` map** — if a documented NIC shows up at an unknown IP the infra row now prints `DOCUMENTED HOST ON NEW IP: <name>` instead of burying it in the consumer list. `device-connectivity-check.sh` now probes `.234` and confirms presence via **ARP MAC** (verified live: "✅ ALphaMAIN present on LAN (ARP MAC 30:c5:99:ef:5c:b4 — ICMP blocked)") rather than the ping-only probe that could never pass. Neither host is in `ALWAYS_ON` — ALphaMAIN is legitimately usually off, and its absence is not a fault.
+- **OPNsense SSH is still dead** — `ssh root@10.0.1.1` times out on port 22, so the weekly lease fetch fails for roughly the **10th consecutive week** (first visible 2026-08-23). The ARP sweep remains the fallback; the newly-documented config backups give static config (range/hosts), but **active** leases still require the web UI.
+
+---
+
 ## 2026-09-27 — The Latitude Was Never Off: Link-Layer Outage, Back Online at `.134` (All Services Up); Monitoring Still Pointed at Dead `.176`
 
 ### 🔧 Infrastructure
