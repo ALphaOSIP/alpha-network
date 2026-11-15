@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-11-15 — ALphaMAIN Re-leased `.234` → `.238` (the New MAC-Matching Detector Caught It on Its First Real Test)
+
+### 🔧 Infrastructure
+- **ALphaMAIN (ASUS gaming PC, MAC `30:c5:99:ef:5c:b4`) moved off `.234` to `10.0.1.238`.** The weekly ARP sweep matched the documented NIC at `10.0.1.238` while `10.0.1.234` was `FAILED` in the ARP table (address vacant). This is the **5th documented-device re-lease since August** (Latitude `.176`→`.134`, HomeBase `.187`→`.88`, EAP 670 `.157`→`.216`, ALphaMAIN `.233`→`.234` on 2026-11-01, now `.234`→`.238`). The machine has now held `.233`, `.234` and `.238` in ~3 months while being "usually off" — dnsmasq is simply reshuffling the pool on each boot.
+- **Identity is MAC-only, as usual.** `.238` answered the sweep's ARP probe but not ICMP, and it had gone back to standby within the hour — a follow-up scan of `.230`–`.245` minutes later saw only `.242`. Windows firewall + modern standby means an absent ping is *not* an absent machine; the ASUSTek MAC match is the conclusive evidence (same as 2026-11-01).
+- **`.234` is now deliberately unlisted.** If it ever answers ARP again, the sweep will flag it rather than silently re-document it.
+- **Docs updated:** ALphaMAIN `.234` → **`.238`** in HARDWARE.md (summary row, spec block, "added 2026-08-09" note, ASCII topology), NETWORK.md (topology, role table, IP table, new 2026-11-15 note, DHCP section), README.md topology. `hardware/mac-mini.md`'s historical mention of `.233`/`.234` left as-is (it documents the old Omada LXC IP, not current state).
+- **Unchanged:** Pi 5 Docker fleet still **19** containers; Zigbee still **8** paired devices (z2m `bridge/health`); HA ✅ (HTTP 200); *arr movie/series counts still `?` (stale API keys — cosmetic, containers healthy); ALpha-Server still Frigate-only; Latitude ✅ at `.134`; both printers (`.103`/`.116`), alphapi3 (`.158`), alphamox (`.108`) present. **No always-on infra host was missing from the LAN** and **no new infra machine joined**.
+
+### 📡 Monitoring
+- **The 2026-11-01 `DOCUMENTED_MACS` fix worked on its first real test.** Instead of burying ALphaMAIN in the 18-host consumer list, the infra row printed `DOCUMENTED HOST ON NEW IP: ALphaMAIN (gaming PC) at 10.0.1.238 (MAC 30:c5:99:ef:5c:b4) — docs list another IP`. That is exactly the class of miss that went unnoticed on 2026-08-09 and three times since; this time detection was automatic.
+- **Reports updated:** `weekly-doc-check.py` `KNOWN_HOSTS` now carries `.238` (`.234` removed on purpose, as `.233` was last time) and `device-connectivity-check.sh` probes `.238` via ARP/MAC rather than ping. `DOCUMENTED_MACS` is unchanged — the MAC didn't move, only the lease.
+- **OPNsense SSH still dead** — port 22 times out from the cron host, so the lease fetch has now failed for ~11 consecutive weeks; the ARP sweep carried the check again. **Active** leases therefore remain unreadable from cron; only the static config (2026-10-20 backup) is known.
+- **The 18 undocumented ARP hosts are all consumer/IoT and correctly ignored:** 5× Amazon (`08:57:fb`, `fc:49:2d`, `44:3d:54`, `a8:e6:21`, `a0:d0:dc`), Apple (`98:9e:63`, `04:e4:b6`), Microsoft/Xbox (`1c:1a:df` — the sole dnsmasq static entry), Resideo thermostat (`b8:2c:a0`), TP-Link (`78:20:51`, `d8:07:b6`), randomized-MAC mobiles (`52:4f:4a`, `8e:3c:f9`, `16:f1:c6`), no-port IoT (`6c:ac:c2`, `00:33:7a`, `44:0f:b4`). Two are new to the list this week — `.131` (`a4:36:c7`, OUI not in the local IEEE database) and `.84` (`16:f1:c6`, locally-administered/randomized) — neither is infra-named, so neither is doc-worthy. Motorola (`04:34:f6`) dropped off.
+- **Standing fix (still not done):** no DHCP reservations exist for ALphaMAIN, the Latitude, the EAP 670 or the HomeBase. **This is the 5th re-lease in four months and it will keep recurring until static mappings are added on OPNsense.**
+
+---
+
 ## 2026-11-01 — ALphaMAIN Re-leased `.233` → `.234` (Found by MAC, Missed by the Check); Config Backup Proves There Are **No DHCP Reservations**
 
 ### 🔧 Infrastructure

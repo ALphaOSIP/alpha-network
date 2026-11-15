@@ -40,7 +40,7 @@
 
 ### ~~LXC 101 — Omada Controller~~ (removed Aug 2026)
 
-Omada controller was removed in Aug 2026; the EAP 670 now runs standalone with cached config. The old LXC IP `10.0.1.141` is no longer in use (briefly reused by ALphaMAIN, who has since moved on to `.233` and then `.234` — see [HARDWARE.md](../HARDWARE.md)).
+Omada controller was removed in Aug 2026; the EAP 670 now runs standalone with cached config. The old LXC IP `10.0.1.141` is no longer in use (briefly reused by ALphaMAIN, who has since moved on to `.233`, then `.234`, and now `.238` — see [HARDWARE.md](../HARDWARE.md)).
 
 ---
 

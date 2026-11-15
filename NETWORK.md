@@ -30,7 +30,7 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
  .134   .100  .108   .216  .158
   ✅
    (link restored 2026-09-24; was .176)
-   ├── ALphaMAIN .234 (NEW Aug 2026 — .141 → .233 → .234; usually off)
+   ├── ALphaMAIN .238 (NEW Aug 2026 — .141 → .233 → .234 → .238; usually off)
    ├── ALpha-Server .135 (NEW Aug 2026 — Frigate NVR)
    ├── Pi-hole .253 (macvlan DNS)
    └── Docker services (light — *arr, Immich, zigbee, MQTT)
@@ -45,7 +45,7 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | Device | Model / Spec | Role |
 |--------|-------------|------|
 | **OPNsense** | Dell OptiPlex | Router, DHCP server, stateful firewall |
-| **ALphaMAIN** | ASUS (model TBD) | Personal gaming PC — SSH-monitor only, no agents (added Aug 2026, IP .234) |
+| **ALphaMAIN** | ASUS (model TBD) | Personal gaming PC — SSH-monitor only, no agents (added Aug 2026, IP .238) |
 | **ALpha-Server** | Custom AMD (Ryzen 5 3600, RX 580) | Frigate NVR / GPU box — Ubuntu 24.04 (added Aug 2026) |
 | **alphamobile-1** | Dell Latitude 5501 (i7-9850H) | Heavy lifter — transcoding, ML, DBs — ✅ Online (link restored 2026-09-24; IP now `.134`) |
 | **alphapi5** | Raspberry Pi 5 | Orchestration — *arr, Zigbee, DNS, **Immich (2nd instance since 2026-09-08)** |
@@ -61,7 +61,7 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 | Device | IP | Purpose |
 |--------|-----|---------|
 | OPNsense | `10.0.1.1` | Router, DHCP, firewall |
-| ALphaMAIN | `10.0.1.234` | **NEW Aug 2026** — main machine (ASUS); DHCP moved `.141` → `.233` → **`.234`** (MAC verified 2026-11-01) |
+| ALphaMAIN | `10.0.1.238` | **NEW Aug 2026** — main machine (ASUS); DHCP moved `.141` → `.233` → `.234` → **`.238`** (MAC verified 2026-11-15) |
 | ALpha-Server | `10.0.1.135` | **NEW Aug 2026** — Frigate NVR (Ryzen 5 3600, Ubuntu 24.04) |
 | alphamobile-1 | `10.0.1.134` | Latitude heavy lifter — ✅ Online; DHCP re-lease `.176` → `.134` on 2026-09-24 (services up) |
 | alphapi5 | `10.0.1.100` | Orchestration — *arr, Zigbee, DNS, RDTClient, **Immich** |
@@ -80,6 +80,8 @@ Latitude Pi 5 Mac Mini EAP 670  Pi 3
 > **Note (2026-09-27):** The **Latitude (alphamobile-1)** also re-leased — `.176` → **`10.0.1.134`** — when its Ethernet link came back on 2026-09-24 after ~5 weeks down (the old `.176` address is now vacant). Same root cause: **no DHCP reservation**. Adding reservations for the Latitude, EAP and HomeBase would end this recurring IP churn.
 >
 > **Note (2026-11-01):** **ALphaMAIN re-leased `.233` → `.234`** — the weekly ARP sweep found ASUSTek MAC `30:c5:99:ef:5c:b4` on `.234`, and `.233` is now empty (`FAILED` in the ARP table). OPNsense change records show admin logins from `10.0.1.234` on 2026-10-20 (Xbox NAT rule edits), so the move happened on or before then — the daily check has been pinging the dead `.233` ever since and reporting "usually off". Nothing is reserved, so this will keep happening.
+>
+> **Note (2026-11-15):** **ALphaMAIN moved again, `.234` → `.238`** — the weekly ARP sweep matched ASUSTek MAC `30:c5:99:ef:5c:b4` at `10.0.1.238` while `.234` was `FAILED` in the ARP table. This is the **5th documented-device re-lease since August** (Latitude, HomeBase, EAP, ALphaMAIN ×2). `.238` sits inside the dnsmasq pool (`10.0.1.41`–`.245`), so it is a normal lease, not a reservation, and `.238` itself stopped answering a few minutes after the sweep (machine asleep). The cron's `KNOWN_HOSTS` and the daily probe now point at `.238`; `.234` is deliberately unlisted so a return there gets flagged.
 
 ---
 
@@ -105,6 +107,7 @@ OPNsense has four VLAN interfaces (confirmed live 2026-08-09). No static mapping
 - **Reservations:** ⚠️ **Essentially none.** The 2026-10-20 config backup holds exactly **one** static host entry — `XBOX` at `10.0.1.170` (`1c:1a:df:62:ee:bc`) — and **no static mappings for any documented server or AP**. Previous docs claimed "all static IPs above are configured as DHCP reservations by MAC address"; that was incorrect and is the root cause of the recurring IP churn below.
 - **⚠️ 2026-08-23 note:** reservations are NOT enforced — ALphaMAIN's lease moved `.141 → .233` despite the docs listing `.141` (OPNsense unreachable from the cron host to verify, so treat DHCP IPs as best-effort).
 - **⚠️ 2026-11-01 note:** ALphaMAIN moved again, `.233 → .234` (same MAC `30:c5:99:ef:5c:b4`; `.233` no longer answers ARP). That is the 4th documented-device re-lease since August (Latitude, EAP, HomeBase, ALphaMAIN). **Fix: add static mappings for ALphaMAIN, the Latitude, the EAP 670 and the HomeBase.**
+- **⚠️ 2026-11-15 note:** ALphaMAIN re-leased a **5th** time, `.234 → .238` (same MAC; `.234` now empty). Two leases in a month for a machine that is usually off means dnsmasq is reshuffling addresses on every boot — it has held `.233`, `.234` and `.238` in ~3 months. **Still no reservations in the 2026-10-20 config backup; the static-mapping fix above remains outstanding.**
 - **Verifying config without SSH:** router SSH (port 22) has been dead for months, but OPNsense **config backups** are stored on alphapi5 in `/home/alpha/backups/opnsense/` (latest manual snapshot `opnsense-config-20261020-0624-prexboxnat.xml`; not yet automated) — they carry the full dnsmasq config (scope, static hosts) and the `<username>root@<ip>` records showing who changed what, from where. Active leases themselves are runtime-only and still need the web UI.
 - **Lease time:** 24 hours (default)
 - **DNS servers advertised:** `10.0.1.253` (Pi-hole) — single server handed out to force all DNS through Pi-hole
